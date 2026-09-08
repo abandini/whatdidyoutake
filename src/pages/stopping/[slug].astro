@@ -59,9 +59,13 @@ const jsonLd = {
     {/* This page is a landing target for phenibutwithdrawal.org, so it assumes
         no prior context and offers the way up rather than the way back. */}
     <p class="callout callout--alarm">
-      <strong>If things are bad right now</strong>, go to <a href="/emergency">what to do in an emergency</a>.
-      Poison Control — <a class="tel" href={`tel:${HELPLINES.poison.tel}`}>{HELPLINES.poison.number}</a> —
-      is free, staffed around the clock by medical toxicologists, and is not law enforcement.
+      <strong>Call <a class="tel" href={`tel:${HELPLINES.emergency.tel}`}>911</a> now</strong> if someone is
+      unconscious, cannot be woken, is not breathing normally, or is having a seizure. Withdrawal from
+      some of these can cause seizures, and that is an emergency.<br /><br />
+      <strong>If things are bad but not that bad</strong>, Poison Control —
+      <a class="tel" href={`tel:${HELPLINES.poison.tel}`}>{HELPLINES.poison.number}</a> — is free, staffed
+      around the clock, and is not law enforcement. Or read
+      <a href="/emergency">what to do in an emergency</a>.
     </p>
 
     <Fragment set:html={bodyHtml} />

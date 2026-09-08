@@ -27,49 +27,22 @@ break at 3am when someone needs `/emergency` to load.
 | IndexNow (Bing/Yandex) | ✅ all 24 URLs accepted (HTTP 202) |
 | Analytics | ✅ none, by decision — see §4 |
 | GitHub | ✅ https://github.com/abandini/whatdidyoutake (public) |
-| **`www` → apex 301** | ❌ **not done** — see below |
-| **`phenibutwithdrawal.org` redirect** | ❌ **not done** — currently returns 522 |
-| **`phenibut.help` redirect** | ❌ **not done** — currently returns 523 |
+| `www` → apex 301 | ✅ live, path preserved |
+| `phenibutwithdrawal.org` → `/stopping/phenibut` | ✅ live, 301 |
+| `phenibut.help` → `/emergency` | ✅ live, 301 |
 | Cloudflare Access on previews | ❌ dashboard-only, not yet enabled |
 | Named clinical review | ❌ outstanding — every page says so on the page |
 
-### The three redirect rules are blocked on a token permission
+### The three redirect rules
 
-Creating them needs **Zone → Dynamic URL Redirects → Edit** (API permission
-group `Dynamic URL Redirects Write`, zone-scoped — this is the group that gates
-the `http_request_dynamic_redirect` ruleset phase). Not Transform Rules, and not
-Page Rules. Every Cloudflare token on this
-machine — `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_DOMAINS_TOKEN`,
-`CLOUDFLARE_EDIT_TOKEN`, `CLOUDFLARE_DNS_TOKEN` and the two duplicates found in
-project `.env` files — returns **HTTP 403** on that endpoint. Page Rules and
-account-level Bulk Redirect Lists are also 403 on all of them.
+Created 8 September 2026 with `node scripts/create-redirects.mjs`, after
+`Dynamic URL Redirects · Edit` was added to the `cf-dns-reps` token. All three
+verified returning 301 to the correct destination, apex and `www` alike.
 
-What the existing tokens *can* do: DNS records and zone settings
-(`CLOUDFLARE_API_TOKEN`), and Pages projects (`CLOUDFLARE_DOMAINS_TOKEN`).
-`CLOUDFLARE_EDIT_TOKEN` is scoped to the `northcoast.ai` zone only.
-
-**To unblock:** at `dash.cloudflare.com/profile/api-tokens`, edit the token
-named **`cf-dns-reps`** (id `7d61f8abe2bd9944634a69e2280154cd`, the value behind
-`CLOUDFLARE_API_TOKEN`) and add one permission:
-
-```
-Permission:     Zone · Dynamic URL Redirects · Edit
-Zone Resources: Include · All zones from account
-                (or: whatdidyoutake.org, phenibutwithdrawal.org, phenibut.help)
-```
-
-That token currently holds DNS Write, Zone Settings Write, Zone WAF Write and
-Analytics Read on all zones, which is why DNS and Pages worked and redirects did
-not.
-
-Then run `node scripts/create-redirects.mjs`, which creates all three rules
-exactly as §2 specifies and is idempotent.
-
-**Until then** the two redirect domains are dead (522/523 — they have no DNS
-records and no origin), and `www.whatdidyoutake.org` serves a duplicate of the
-apex. Every page already carries a self-referential canonical to the apex, so
-search engines will consolidate correctly in the meantime; the redirect is still
-the right fix.
+Note for anyone re-running this: the `http_request_dynamic_redirect` phase
+entrypoint accepts **only** a `rules` array. Sending `name`, `kind` or `phase`
+alongside it is rejected with `unknown field "kind"`. A 404 from the entrypoint
+means "permitted, no ruleset yet" — not a permissions failure.
 
 ---
 

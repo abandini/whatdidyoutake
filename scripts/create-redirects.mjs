@@ -50,9 +50,10 @@ for (const z of ZONES) {
   const has = existing.success && (existing.result.rules||[]).some(r => r.description === z.name);
   if (has) { console.log(`· ${z.zone}: rule "${z.name}" already exists, skipping`); continue; }
 
-  const body = existing.success
-    ? { rules: [...(existing.result.rules||[]), rule] }
-    : { name: 'redirects', kind: 'zone', phase: 'http_request_dynamic_redirect', rules: [rule] };
+  // The phase entrypoint accepts only `rules`. Sending name/kind/phase is
+  // rejected; a 404 above just means the entrypoint has no ruleset yet, and
+  // PUTting rules creates it.
+  const body = { rules: [...((existing.success && existing.result.rules) || []), rule] };
 
   const res = await api(`/zones/${z.id}/rulesets/phases/http_request_dynamic_redirect/entrypoint`, {
     method: 'PUT', body: JSON.stringify(body),
