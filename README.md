@@ -82,12 +82,18 @@ which is why the bibliography can be trusted rather than merely well-formatted.
 
 ---
 
-## Before this goes live
+## Live
 
-Two things are outstanding and neither can be resolved from inside the repository:
+**https://whatdidyoutake.org** — Cloudflare Pages, deployed 8 September 2026.
+Search Console verified, sitemap submitted, IndexNow accepted, no analytics.
+See `docs/DEPLOYMENT.md` §0 for the full state and what is still outstanding.
 
-1. **`SITE.operator` / `SITE.operatorBio` in `src/lib/site.js` are `TKTK`.**
-   The build fails until they are filled. `/about` has to say who runs this.
+## Outstanding
+
+1. **Three redirect rules are blocked on a Cloudflare token permission**
+   (`Zone · Transform Rules · Edit`). `www` → apex, and the two deep-linking
+   domains. Add the permission, then run `node scripts/create-redirects.mjs`.
+   Details in `docs/DEPLOYMENT.md` §0.
 2. **No page has been clinically reviewed.** All twelve compound pages carry a
    visible notice saying so, which is the honest state — but SPEC 2 §11.4 wants a
    named reviewer with published credentials. Add a file to

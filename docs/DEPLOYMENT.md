@@ -9,6 +9,63 @@ break at 3am when someone needs `/emergency` to load.
 
 ---
 
+## 0. Current state — as deployed 8 September 2026
+
+**The site is live at https://whatdidyoutake.org.** All 24 sitemap URLs return
+200 with canonical and `og:url` aligned; the strict CSP, HSTS and the
+`/emergency` `stale-if-error` cache rule are all confirmed on the live domain.
+
+| Item | State |
+|---|---|
+| Pages project `whatdidyoutake` | ✅ created, production branch `main` |
+| Deployed | ✅ `wrangler pages deploy dist` |
+| Custom domains bound | ✅ `whatdidyoutake.org`, `www.whatdidyoutake.org` |
+| DNS | ✅ proxied CNAMEs for apex and `www` → `whatdidyoutake.pages.dev` |
+| Headers / CSP | ✅ verified live |
+| `robots.txt` / `sitemap.xml` / `llms.txt` | ✅ live |
+| Google Search Console | ✅ `sc-domain:whatdidyoutake.org` verified by DNS TXT, sitemap registered |
+| IndexNow (Bing/Yandex) | ✅ all 24 URLs accepted (HTTP 202) |
+| Analytics | ✅ none, by decision — see §4 |
+| GitHub | ✅ https://github.com/abandini/whatdidyoutake (public) |
+| **`www` → apex 301** | ❌ **not done** — see below |
+| **`phenibutwithdrawal.org` redirect** | ❌ **not done** — currently returns 522 |
+| **`phenibut.help` redirect** | ❌ **not done** — currently returns 523 |
+| Cloudflare Access on previews | ❌ dashboard-only, not yet enabled |
+| Named clinical review | ❌ outstanding — every page says so on the page |
+
+### The three redirect rules are blocked on a token permission
+
+Creating them needs **Zone → Transform Rules → Edit** (the
+`http_request_dynamic_redirect` ruleset phase). Every Cloudflare token on this
+machine — `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_DOMAINS_TOKEN`,
+`CLOUDFLARE_EDIT_TOKEN`, `CLOUDFLARE_DNS_TOKEN` and the two duplicates found in
+project `.env` files — returns **HTTP 403** on that endpoint. Page Rules and
+account-level Bulk Redirect Lists are also 403 on all of them.
+
+What the existing tokens *can* do: DNS records and zone settings
+(`CLOUDFLARE_API_TOKEN`), and Pages projects (`CLOUDFLARE_DOMAINS_TOKEN`).
+`CLOUDFLARE_EDIT_TOKEN` is scoped to the `northcoast.ai` zone only.
+
+**To unblock:** at `dash.cloudflare.com/profile/api-tokens`, edit the token
+behind `CLOUDFLARE_API_TOKEN` and add:
+
+```
+Permission:     Zone · Transform Rules · Edit
+Zone Resources: Include · All zones from account
+                (or: whatdidyoutake.org, phenibutwithdrawal.org, phenibut.help)
+```
+
+Then run `node scripts/create-redirects.mjs`, which creates all three rules
+exactly as §2 specifies and is idempotent.
+
+**Until then** the two redirect domains are dead (522/523 — they have no DNS
+records and no origin), and `www.whatdidyoutake.org` serves a duplicate of the
+apex. Every page already carries a self-referential canonical to the apex, so
+search engines will consolidate correctly in the meantime; the redirect is still
+the right fix.
+
+---
+
 ## 1. Cloudflare Pages project
 
 ```
