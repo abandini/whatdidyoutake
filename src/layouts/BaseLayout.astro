@@ -1,0 +1,92 @@
+---
+import '../styles/global.css';
+import { SITE, FUNDING_STATEMENT, NAV } from '../lib/site.js';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path without trailing slash, e.g. "/emergency". "/" for the homepage. */
+  path: string;
+  /** Set on /emergency so the page does not link to itself in the top bar. */
+  isEmergency?: boolean;
+  wide?: boolean;
+  jsonLd?: unknown;
+  /** Error pages: no canonical (they are not a route) and must not be indexed. */
+  noindex?: boolean;
+}
+
+const { title, description, path, isEmergency = false, wide = false, jsonLd, noindex = false } = Astro.props;
+const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${path}`;
+const fullTitle = path === '/' ? `${SITE.name} — ${SITE.tagline}` : `${title} — ${SITE.name}`;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    {/* SPEC 3 §3 — neither site may characterise the other's readers. */}
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:none'} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta name="twitter:card" content="summary" />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    {/* SPEC 2 §15 — the emergency link is the FIRST interactive element in the
+        DOM on every page. Nothing, including the skip link, comes before it. */}
+    {isEmergency ? (
+      <a class="emergency-bar" href="/emergency" aria-current="page"
+        >If something is going wrong right now <span>— Poison Control 1-800-222-1222, free and 24/7</span></a
+      >
+    ) : (
+      <a class="emergency-bar" href="/emergency"
+        >If something is going wrong right now <span>— what to do, and what to tell an ER</span></a
+      >
+    )}
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <div class={wide ? 'shell shell--wide masthead-inner' : 'shell masthead-inner'}>
+        <a class="wordmark" href="/">{SITE.name}</a>
+        <nav aria-label="Sections">
+          <ul>
+            {NAV.map((item) => (
+              <li>
+                <a href={item.href} aria-current={path === item.href ? 'page' : undefined}>{item.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class={wide ? 'shell shell--wide' : 'shell'}>
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class={wide ? 'shell shell--wide' : 'shell'}>
+        <p class="funding">{FUNDING_STATEMENT}</p>
+        <p>
+          This site publishes no dosing information and recommends no supplier. It routes crises to
+          people qualified to handle them rather than trying to handle them itself.
+        </p>
+        <ul>
+          <li><a href="/about">About &amp; editorial policy</a></li>
+          <li><a href="/about/corrections">Corrections log</a></li>
+          <li><a href="/how-we-rate">How we rate</a></li>
+          <li><a href="/sources">Sources</a></li>
+          <li><a href="/emergency">Emergency</a></li>
+        </ul>
+      </div>
+    </footer>
+  </body>
+</html>

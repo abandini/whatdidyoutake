@@ -1,0 +1,57 @@
+---
+// SPEC 2 §5 — the full rating matrix. Six columns because the six dimensions
+// are never collapsed into one; the band column carries the plain-language
+// verdict, with shape and text so it never depends on colour.
+import { getCollection } from 'astro:content';
+import BandBadge from './BandBadge.astro';
+import { DIMENSIONS, BANDS } from '../lib/rating-system.js';
+
+interface Props { caption?: string; }
+const { caption } = Astro.props;
+
+const compounds = (await getCollection('compounds')).sort((a, b) => {
+  const rank = (x: any) => BANDS.find((k) => k.key === x.data.band)!.rank;
+  return rank(a) - rank(b) || a.data.name.localeCompare(b.data.name);
+});
+
+const SHORT: Record<string, string> = {
+  dependence: 'Dependence',
+  acuteToxicity: 'Acute toxicity',
+  documentedHarm: 'Documented harm',
+  longTerm: 'Long-term risk',
+  evidenceQuality: 'Evidence quality',
+  productIntegrity: 'Product integrity',
+};
+---
+<div class="matrix-wrap">
+  <table class="matrix">
+    {caption && <caption>{caption}</caption>}
+    <thead>
+      <tr>
+        <th scope="col">Compound</th>
+        <th scope="col">Verdict</th>
+        {DIMENSIONS.map((d) => (
+          <th scope="col" class="num"><abbr title={`${d.label}. ${d.measures}`}>{SHORT[d.key]}</abbr></th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {compounds.map((c) => (
+        <tr>
+          <th scope="row"><a href={`/compounds/${c.id}`}>{c.data.name}</a></th>
+          <td><BandBadge band={c.data.band} showRank={false} /></td>
+          {DIMENSIONS.map((d) => (
+            <td class="num">
+              <span class="visually-hidden">{d.label}: </span>{c.data.ratings[d.key].score}<span class="visually-hidden"> out of 5</span>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="meta-list">
+  Every score is 1–5 and higher always means more of that dimension. <strong>Evidence quality is the
+  one that reads backwards</strong>: a high score there means well studied, not safe.
+  <a href="/how-we-rate">How we rate, and how to challenge a rating</a>.
+</p>

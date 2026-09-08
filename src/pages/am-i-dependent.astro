@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../lib/site.js';
+
+// SPEC 2 §9 — plain language, non-clinical, no scoring, no diagnosis.
+// No email capture, no account, no quiz results page, no lead generation.
+const description =
+  'Five things people notice before they use the word dependence, what each one actually means, and what to do about it — with no quiz, no score, no diagnosis and no email address.';
+
+const RECOGNITIONS = [
+  {
+    q: 'The amount that worked doesn’t work anymore.',
+    a: `This is tolerance, and it is the first thing to appear. It is not you being weak or your
+        supply being poor quality. Your nervous system has adapted to the compound being there, and it
+        is doing what it is supposed to do. It matters because the obvious response — take more — is
+        also the thing that deepens the adaptation.`,
+    what: `Nothing dramatic. But this is the cheapest moment to stop, and it gets more expensive from
+        here. If you are going to act, this is where acting is easiest.`,
+  },
+  {
+    q: 'The gap between doses is shrinking.',
+    a: `Watch the schedule rather than the amount. People notice the amount going up because it costs
+        money; almost nobody notices the interval collapsing. Once you are taking something to get
+        through a specific part of the day, and then an earlier part of the day, the pattern has
+        changed even if the total has not.`,
+    what: `Write down when you took it, for a week, without trying to change anything. Most people
+        find the honest record does not match what they believed.`,
+  },
+  {
+    q: 'You’ve thought about what happens if you run out.',
+    a: `Not "I would be annoyed" — the specific, slightly cold feeling of realising you are low, and
+        the reorganising that follows. Checking supply. Ordering early. Keeping some back. This is the
+        clearest single sign, and it usually arrives long before anyone would use the word addiction.`,
+    what: `Take it seriously in proportion to how familiar it felt to read. If you recognised it
+        immediately, that is the answer to the question this page is asking.`,
+  },
+  {
+    q: 'You’ve tried to stop and started again because stopping felt worse than continuing.',
+    a: `This is the important one, and it is the one that gets misread. When you stop, what comes back
+        is usually worse than what you originally had — anxiety worse than your original anxiety, pain
+        worse than your original pain. From the inside that feels like proof that you needed it. It is
+        usually withdrawal, and it is temporary.`,
+    what: `This is the point at which doing it alone stops being a good plan, and for some compounds
+        stops being safe. With alcohol, benzodiazepines and phenibut, stopping suddenly is itself
+        dangerous. See stopping, below.`,
+  },
+  {
+    q: 'You’re taking it to feel normal rather than to feel better.',
+    a: `The reason changed and you probably did not notice when. You started taking it for something —
+        anxiety, pain, energy, sleep — and at some point the purpose became avoiding how you feel
+        without it. Same substance, same amount, completely different situation.`,
+    what: `This is the definition, in ordinary language. Not a diagnosis, and not a moral fact about
+        you. It is a description of a state that has treatments.`,
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'MedicalWebPage',
+      name: 'Am I dependent?',
+      url: `${SITE.url}/am-i-dependent`,
+      description,
+      inLanguage: 'en',
+      isAccessibleForFree: true,
+      publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: RECOGNITIONS.map((r) => ({
+        '@type': 'Question',
+        name: r.q,
+        acceptedAnswer: { '@type': 'Answer', text: r.a.replace(/\s+/g, ' ').trim() },
+      })),
+    },
+  ],
+};
+---
+<BaseLayout title="Am I dependent?" description={description} path="/am-i-dependent" jsonLd={jsonLd}>
+  <h1>Am I dependent?</h1>
+  <p class="lede">
+    There is no quiz on this page, no score at the end, and nowhere to enter an email address. Nobody
+    can diagnose you from a web page and we are not going to pretend otherwise. What follows is five
+    things people tend to notice, in roughly the order they notice them.
+  </p>
+  <p>
+    Read them and see how many you recognise. That is the whole method, and it is more accurate than
+    a questionnaire, because you are the only person with the information.
+  </p>
+
+  {RECOGNITIONS.map((r, i) => (
+    <section>
+      <h2>{i + 1}. {r.q}</h2>
+      <p>{r.a}</p>
+      <p><strong>What to do about it:</strong> {r.what}</p>
+    </section>
+  ))}
+
+  <h2>So what does it mean if several of those landed?</h2>
+  <p>
+    That you have a physical dependence, most likely, and that it is easier to deal with now than it
+    will be later. It does not mean you are an addict, that you have ruined anything, or that you need
+    to reorganise your identity around this. Dependence is a physiological state, it is extremely
+    common, and it is treatable.
+  </p>
+  <p>
+    It also does not mean you have to stop today. It means the decision is worth making deliberately
+    rather than by drift.
+  </p>
+
+  <h2>The one thing that is genuinely urgent</h2>
+  <p class="callout callout--alarm">
+    <strong>For some compounds, stopping suddenly is the dangerous part.</strong> Alcohol,
+    benzodiazepines and <a href="/compounds/phenibut">phenibut</a> can produce a withdrawal severe
+    enough to cause seizures. If you are using one of those regularly, do not simply stop —
+    <a href="/stopping/phenibut">read this first</a>. With opioids, including
+    <a href="/compounds/kratom">kratom</a> and <a href="/compounds/tianeptine">tianeptine</a>,
+    stopping is not usually dangerous but it is hard, and there is medication that helps.
+  </p>
+
+  <h2>Where to go from here</h2>
+  <ul>
+    <li><a href="/stopping/phenibut">Stopping phenibut</a> — including what to do if you have no doctor.</li>
+    <li><a href="/stopping/kratom">Stopping kratom</a>.</li>
+    <li><a href="/stopping/tianeptine">Stopping tianeptine</a>.</li>
+    <li><a href="/emergency">If something is going wrong right now</a>.</li>
+  </ul>
+  <p>
+    If what you are using is not on that list, the general route is the same:
+    <strong>Poison Control on <span class="tel">1-800-222-1222</span></strong> will advise you, free,
+    at any hour, and they are not law enforcement. <strong>SAMHSA on <span class="tel">1-800-662-4357</span></strong>
+    refers to treatment regardless of insurance.
+  </p>
+  <p class="review-note">
+    We do not collect anything on this site. There is no analytics on these pages, no cookie, no
+    account, and no address to put yourself on. Nothing you read here is recorded against you, and
+    there is nobody to follow up with you afterwards — which also means this page cannot be a
+    substitute for talking to a person.
+  </p>
+</BaseLayout>

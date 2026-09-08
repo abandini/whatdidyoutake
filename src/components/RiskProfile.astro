@@ -1,0 +1,43 @@
+---
+// SPEC 2 §4 — the six-dimension profile. Deliberately never averaged into one
+// number: a compound can be 1 on acute toxicity and 5 on long-term risk, and
+// averaging destroys exactly the information the reader needs.
+import { DIMENSIONS } from '../lib/rating-system.js';
+
+interface Props { ratings: Record<string, { score: number; note: string; refs?: string[] }>; name: string; }
+const { ratings, name } = Astro.props;
+---
+<table class="profile">
+  <caption>
+    Six independent dimensions, each scored 1–5. They are not averaged, because a compound can be
+    harmless in a single dose and cause permanent harm over a year — and a single number would hide
+    exactly that. <a href="/how-we-rate">How we rate, and how to challenge a rating</a>.
+  </caption>
+  <thead>
+    <tr>
+      <th scope="col">Dimension</th>
+      <th scope="col">{name}</th>
+      <th scope="col">Why</th>
+    </tr>
+  </thead>
+  <tbody>
+    {DIMENSIONS.map((d) => {
+      const r = ratings[d.key];
+      return (
+        <tr>
+          <th scope="row">
+            {d.label}
+            <span class="dim-measure">{d.measures}</span>
+          </th>
+          <td class="score-cell">
+            <span class="pips" aria-hidden="true">
+              {[1, 2, 3, 4, 5].map((i) => <span class={i <= r.score ? 'pip pip--on' : 'pip'} />)}
+            </span>
+            <span class="score-text">{r.score} / 5</span>
+          </td>
+          <td class="note">{r.note}</td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>

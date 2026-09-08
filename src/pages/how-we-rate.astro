@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BandBadge from '../components/BandBadge.astro';
+import { DIMENSIONS, BANDS } from '../lib/rating-system.js';
+import { SITE } from '../lib/site.js';
+
+// SPEC 2 §4 — publish the rubric, including what would change a rating and how
+// to submit a correction. Rendered from the same data the ratings use, so this
+// page cannot describe a scale the compound pages are not actually using.
+const description =
+  'The six dimensions every compound is rated on, the full 1–5 scale for each, the five verdict bands, what would change a rating, and how to challenge one.';
+---
+<BaseLayout title="How we rate" description={description} path="/how-we-rate">
+  <h1>How we rate</h1>
+  <p class="lede">
+    Every compound is scored on six independent dimensions. They are never averaged, and this page is
+    generated from the same data the compound pages use, so the scale described here is the scale
+    actually being applied.
+  </p>
+
+  <h2>Why there is no single number</h2>
+  <p>
+    A single score would be more convenient and it would destroy the information you came for.
+    <a href="/compounds/cardarine">Cardarine</a> scores 1 for acute toxicity and 5 for long-term risk:
+    taking it once is close to harmless, and the concern is a cancer years later. <a
+    href="/compounds/phenibut">Phenibut</a> is almost the inverse — 5 for dependence, 2 for long-term
+    risk, because the damage it does is to your life rather than your organs. Average either pair and
+    you get a middling number that tells you nothing about which risk you are taking.
+  </p>
+  <p>
+    So we publish the profile. Higher always means more of that dimension, with one exception, and it
+    is the one people misread most.
+  </p>
+
+  <h2>The six dimensions</h2>
+  {DIMENSIONS.map((d) => (
+    <section>
+      <h3>{d.label}</h3>
+      <p>{d.measures}</p>
+      {d.inverted && (
+        <p class="callout">
+          <strong>This is the dimension that reads backwards.</strong> A high score means the compound
+          is well characterised — that we know what it does. It does not mean it is safe.
+          <a href="/compounds/mk-677">MK-677</a> scores 4 here because it was studied properly for two
+          years, and what those studies found is part of why it is not an approved medicine.
+        </p>
+      )}
+      <table class="profile">
+        <tbody>
+          {[1, 2, 3, 4, 5].map((n) => (
+            <tr>
+              <th scope="row">
+                <span class="pips" aria-hidden="true">
+                  {[1, 2, 3, 4, 5].map((i) => <span class={i <= n ? 'pip pip--on' : 'pip'} />)}
+                </span>
+                <span class="score-text">{n} / 5</span>
+              </th>
+              <td class="note">{d.scale[n]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+
+  <h2>The five verdict bands</h2>
+  <p>
+    Above the six-dimension profile, each compound carries a plain-language verdict in one of five
+    bands. Bands are distinguished by shape and by name as well as by colour, and never by colour
+    alone.
+  </p>
+  {BANDS.map((b) => (
+    <section>
+      <h3><BandBadge band={b.key} /></h3>
+      <p>{b.gloss} Example: <a href={`/compounds/${b.example.replace(/\s+/g, '-').toLowerCase()}`}>{b.example}</a>.</p>
+    </section>
+  ))}
+  <p>
+    <strong>All five bands are in use.</strong> That is a deliberate constraint and the build fails if
+    it stops being true. A site where every compound is rated dangerous carries no information, and
+    the first thing a sceptical reader does is look up the one substance they already know about. If
+    we told you creatine was dangerous, you would be right to stop reading.
+  </p>
+
+  <h2>What would change a rating</h2>
+  <ul>
+    <li><strong>Human trial evidence appearing where there was none.</strong> Most of the compounds here are rated partly on absence of data. Data would change that in either direction.</li>
+    <li><strong>A documented harm signal becoming a measured rate.</strong> Case reports tell you something happens; they cannot tell you how often. A cohort study or a registry analysis would move both the documented-harm and evidence-quality scores.</li>
+    <li><strong>A change in the supply chain.</strong> Product integrity is about what is actually in the bottle. Regulation, or credible independent testing, would lower those scores.</li>
+    <li><strong>Regulatory action</strong> — approval, scheduling, withdrawal, or a safety communication from a regulator.</li>
+    <li><strong>Us being wrong.</strong> See below.</li>
+  </ul>
+
+  <h2>How to challenge a rating</h2>
+  <p>
+    Email <a href={`mailto:${SITE.correctionsAddress}`}>{SITE.correctionsAddress}</a>. What helps most:
+  </p>
+  <ul>
+    <li>The page and the specific sentence or score you think is wrong.</li>
+    <li>What you think it should say instead.</li>
+    <li>A citation — a PMID, a DOI, or a link to a regulatory document. We will read it.</li>
+  </ul>
+  <p>
+    You do not need to be a clinician or a researcher. If you took something and our description of
+    what it feels like is wrong, that is worth telling us, and it is the kind of correction that is
+    hardest to get any other way.
+  </p>
+  <p>
+    Corrections are <a href="/about/corrections">published in a dated log</a>, not quietly edited into
+    the page. If we got something wrong, the record of having got it wrong stays up.
+  </p>
+</BaseLayout>

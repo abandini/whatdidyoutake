@@ -1,0 +1,42 @@
+---
+// SPEC 2 §6.9 — every citation, linked, with PMID or DOI. Each entry is
+// labelled with what kind of evidence it is, because "case report" and
+// "randomised trial" are different and must read differently (SPEC 2 §3.2).
+interface Source {
+  id: string; citation: string; pmid?: string; doi?: string; url?: string; kind: string; year: number;
+}
+interface Props { sources: Source[]; heading?: string; id?: string; }
+const { sources, heading = 'Sources', id = 'sources' } = Astro.props;
+
+const KIND_LABEL: Record<string, string> = {
+  'randomised-trial': 'Randomised trial',
+  'controlled-trial': 'Controlled trial',
+  observational: 'Observational study',
+  'systematic-review': 'Systematic review',
+  'case-report': 'Case report',
+  'case-series': 'Case series',
+  animal: 'Animal study',
+  'in-vitro': 'Laboratory study',
+  regulatory: 'Regulatory document',
+  'poison-centre': 'Poison-centre data',
+  analytical: 'Product analysis',
+  reference: 'Reference work',
+};
+
+const linkFor = (s: Source) =>
+  s.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${s.pmid}/` : s.doi ? `https://doi.org/${s.doi}` : s.url;
+---
+<section class="sources" id={id}>
+  <h2>{heading}</h2>
+  <ol>
+    {sources.map((s) => (
+      <li id={`source-${s.id}`}>
+        <span class="source-kind">{KIND_LABEL[s.kind] ?? s.kind}, {s.year}.</span>{' '}
+        {s.citation}{' '}
+        <a href={linkFor(s)} rel="noopener nofollow">
+          {s.pmid ? `PMID ${s.pmid}` : s.doi ? `doi:${s.doi}` : 'link'}
+        </a>
+      </li>
+    ))}
+  </ol>
+</section>

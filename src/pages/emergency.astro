@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, HELPLINES } from '../lib/site.js';
+
+// SPEC 2 §7. Design constraints: loads on a bad connection in a hospital car
+// park, no images, no JS required, largest text on the site. SPEC 3 §6: never
+// analytics on this page. Absolute rule: no dosing, no tapers, no quantities.
+const path = '/emergency';
+const description =
+  'What to do right now: when to call 911 first, Poison Control on 1-800-222-1222, first aid while you wait, and exactly what to tell an emergency department about a compound they have not heard of.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'If something is going wrong right now',
+  url: `${SITE.url}${path}`,
+  description,
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+};
+---
+<BaseLayout title="If something is going wrong right now" description={description} path={path} isEmergency jsonLd={jsonLd}>
+  <div class="emergency">
+    <h1>If something is going wrong right now</h1>
+
+    <h2>Call 911 first if any of these are true</h2>
+    <p>
+      Do not read the rest of this page. Do not call anyone else first. Call now if someone is:
+    </p>
+    <ul>
+      <li><strong>Not breathing, or breathing slowly, irregularly or noisily</strong></li>
+      <li><strong>Unconscious, or cannot be woken</strong></li>
+      <li><strong>Having a seizure</strong></li>
+      <li>Blue or grey around the lips or fingertips</li>
+      <li>Confused and does not know where they are</li>
+      <li>Very hot to the touch, or rigid</li>
+      <li>Having chest pain, or has collapsed</li>
+      <li><strong>Someone who has taken something in order to harm themselves</strong></li>
+    </ul>
+
+    <a class="call" href={`tel:${HELPLINES.emergency.tel}`}>
+      <span class="num">{HELPLINES.emergency.number}</span>
+      <span class="who">Emergency services. Stay on the line — the dispatcher will tell you what to do while help is coming.</span>
+    </a>
+
+    <h2>What to do while you wait</h2>
+    <ul>
+      <li><strong>If they are unconscious but breathing, roll them onto their side</strong>, head tilted back and chin lifted. If they vomit while on their back they can choke on it. This is the single most useful thing an untrained person can do.</li>
+      <li><strong>If they are not breathing normally, start chest compressions</strong> and let the dispatcher talk you through it. Get an AED if there is one.</li>
+      <li><strong>If you think it involves an opioid, give naloxone if you have it</strong> — follow the instructions on the device. Then still call 911. It can wear off before the drug does, so they can go back under; they need to be watched even if they wake up and feel fine.</li>
+      <li><strong>If they are having a seizure</strong>, move hard objects away, put something soft under their head, and let it happen. Do not hold them down and do not put anything in their mouth.</li>
+      <li><strong>Do not make them vomit.</strong></li>
+      <li><strong>Do not give food, drink, alcohol, coffee or any medication</strong> to someone who is drowsy, confused or unconscious.</li>
+      <li><strong>Do not leave them alone</strong>, and do not let them drive or "walk it off". Do not let them sleep it off unwatched.</li>
+    </ul>
+
+    <h2>If you are not sure how bad it is</h2>
+
+    <a class="call" href={`tel:${HELPLINES.poison.tel}`}>
+      <span class="num">{HELPLINES.poison.number}</span>
+      <span class="who">
+        <strong>Poison Control.</strong> Free, 24 hours. Answered by specialists in poison
+        information — nurses and pharmacists — with medical toxicologists on call behind them.
+        They advise the public and clinicians alike. <strong>They are a clinical service, not law
+        enforcement, and they are not going to report you for taking something.</strong> Calling them
+        early, before things get worse, is exactly what they are for.
+      </span>
+    </a>
+
+    <h2>If you are thinking about ending your life</h2>
+
+    <a class="call" href={`tel:${HELPLINES.crisis.tel}`}>
+      <span class="num">{HELPLINES.crisis.number}</span>
+      <span class="who">Suicide &amp; Crisis Lifeline. Call or text, free, 24 hours.</span>
+    </a>
+
+    <p>
+      <strong>If you have already taken something to harm yourself, call 911 instead, now.</strong>
+      988 is for talking to someone. It is not treatment for something already in you, and the two
+      are not interchangeable. You can call 988 afterwards.
+    </p>
+
+    <h2>Outside the United States</h2>
+    <p>
+      Call your local emergency number. Many countries also have a poison centre, though hours,
+      staffing and whether they take calls from the public vary — the emergency number is the reliable
+      route everywhere.
+    </p>
+
+    <h2>If you are going to an emergency department, this is what to tell them</h2>
+
+    <p>
+      Most staff will not have heard of what you took. That is not a failure on their part — these
+      compounds are new, obscure, and there are hundreds of them. You can give them what they need in
+      about thirty seconds. Read this out, or hand them your phone.
+    </p>
+
+    <div class="script">
+      <p class="say">“I took <em>[name of the compound]</em>. Let me spell that for you.”</p>
+      <p class="say">
+        “I've been taking it <em>[how much, how often, and for how long]</em>, and I last took it
+        <em>[when]</em>. I <em>[swallowed it / injected it / used it as a spray]</em>.”
+      </p>
+      <p class="say">“I've also taken <em>[everything else, including alcohol and anything prescribed]</em>.”</p>
+      <p class="say">“Right now I feel <em>[symptoms]</em>.”</p>
+    </div>
+
+    <p>They will also want to know, so have it ready: anything you are prescribed, any conditions you
+      have, any allergies, whether you could be pregnant, and where the product came from.</p>
+
+    <p>
+      <strong>Say the real amounts.</strong> People routinely understate them, and it is understandable
+      — but it hands the team a wrong picture, and they cannot treat you from a wrong picture. They
+      are there to work out what is in you and fix it, not to investigate you.
+    </p>
+
+    <p>
+      <strong>Bring the container if you safely can.</strong> The order confirmation or product page on
+      your phone works too. Do not delay leaving to hunt for it, do not handle loose powder, and seal
+      it if it is open. The label and the vendor tell them more than the name alone.
+    </p>
+
+    <h2>If it was phenibut, say this as well</h2>
+
+    <p>These three facts change what a clinician considers and what they treat you with:</p>
+
+    <div class="script">
+      <p class="say">“Phenibut will not show up on a standard drug screen.”</p>
+      <p class="say">“It's a GABA-B agonist — it's structurally related to baclofen.”</p>
+      <p class="say">“Withdrawal from it presents like benzodiazepine or alcohol withdrawal.”</p>
+    </div>
+
+    <p>
+      A negative drug screen does not rule phenibut out — it is not on the panel. Clinicians have been
+      misled by reading a clean screen as an all-clear. See also
+      <a href="/stopping/phenibut">stopping phenibut</a>.
+    </p>
+
+    <h2>If it was something sold as a supplement, say this</h2>
+
+    <p>
+      Several things sold in shops and online as supplements are pharmacologically something else.
+      <a href="/compounds/tianeptine">Tianeptine</a> — sold as Zaza, Tianaa, Neptune's Fix and other
+      names — is a full opioid agonist, and <strong>naloxone can reverse it</strong>. Say that out
+      loud. It will not appear on a routine drug screen either.
+    </p>
+
+    <h2>If they do not recognise the name</h2>
+
+    <p>
+      Ask them to call the regional poison centre. Toxicologists take calls from clinicians around the
+      clock, and it is a completely normal request — it is what the service is for. Staff make these
+      calls routinely and will not take it as a slight.
+    </p>
+
+    <p>You can say: <strong>“Would you be able to call poison control about this one? It's pretty obscure.”</strong></p>
+
+    <h2>If you are the family member and they cannot speak</h2>
+
+    <p>
+      Then you say all of the above. Bring whatever you found — the packet, the vial, the powder, the
+      phone with the order on it. Do not worry about getting anyone into trouble; that is not what is
+      happening in the room.
+    </p>
+
+    <p>
+      If you are trying to work out what you have found rather than dealing with an emergency,
+      <a href="/family">start here instead</a>.
+    </p>
+
+    <h2>One thing not to do</h2>
+
+    <p>
+      <strong>If someone is physically dependent on something, do not confiscate their supply and
+      leave them to it.</strong> With alcohol, benzodiazepines and
+      <a href="/compounds/phenibut">phenibut</a>, sudden withdrawal is itself a medical emergency and
+      can cause seizures.
+    </p>
+    <p>
+      That is not a reason to help someone take more, and it is not a reason to wait. It is a reason to
+      get clinical advice — from Poison Control, an urgent care, or an emergency department — rather
+      than improvising the withdrawal yourself.
+    </p>
+
+    <p>
+      This page deliberately contains no doses, no amounts and no taper information. It exists to get
+      you to people who can treat this, and to make sure they understand you when you arrive.
+    </p>
+  </div>
+</BaseLayout>

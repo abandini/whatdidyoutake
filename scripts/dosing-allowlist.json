@@ -1,0 +1,4 @@
+{
+  "$comment": "SPEC 3 §7 — every entry is a deliberate, human-reviewed exemption to the zero-dosing rule. Entries that stop matching FAIL the build, so this file cannot rot. Do not add an entry to silence a real dose; rewrite the sentence instead.",
+  "entries": []
+}

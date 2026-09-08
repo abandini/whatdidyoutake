@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RatingMatrix from '../../components/RatingMatrix.astro';
+import BandBadge from '../../components/BandBadge.astro';
+import { getCollection } from 'astro:content';
+import { BANDS } from '../../lib/rating-system.js';
+
+const description =
+  'Twelve compounds rated across six independent dimensions — dependence, acute toxicity, documented harm, long-term risk, evidence quality and product integrity — with what each one actually does before what it costs.';
+
+const compounds = await getCollection('compounds');
+const byBand = BANDS.map((b) => ({
+  band: b,
+  items: compounds.filter((c) => c.data.band === b.key).sort((a, b2) => a.data.name.localeCompare(b2.data.name)),
+}));
+---
+<BaseLayout title="Compounds" description={description} path="/compounds" wide>
+  <h1>Compounds</h1>
+  <p class="lede">
+    Twelve compounds, chosen because the honest answer differs sharply from the marketing answer and
+    the harm is real. Each page leads with what the compound actually does for the person taking it,
+    because a page that opens with a warning is a page nobody finishes.
+  </p>
+
+  <RatingMatrix caption="All twelve compounds, sorted by verdict band." />
+
+  {byBand.map(({ band, items }) => items.length > 0 && (
+    <section>
+      <h2><BandBadge band={band.key} /></h2>
+      <p>{band.gloss}</p>
+      <ul class="doors">
+        {items.map((c) => (
+          <li>
+            <a href={`/compounds/${c.id}`}>
+              {c.data.name}
+              <span class="door-note">{c.data.verdict}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+
+  <h2>What is not here</h2>
+  <p>
+    There are well over a hundred compounds sold in this space. This site covers twelve, and will not
+    expand until all twelve have been reviewed by a clinician and are being kept current. One page
+    that is accurate and up to date is worth more than forty that are neither — to you, to a search
+    engine, and to a language model answering your question on our behalf.
+  </p>
+  <p>
+    If a compound you are looking for is missing, that is not a judgement that it is safe. It means we
+    have not done the work yet and would rather say so.
+  </p>
+</BaseLayout>

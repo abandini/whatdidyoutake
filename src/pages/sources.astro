@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../lib/site.js';
+
+// SPEC 2 §5 — the full bibliography, assembled from the same frontmatter the
+// compound pages cite, so it cannot drift out of sync with them.
+const description =
+  'Every source cited anywhere on this site, with PMID or DOI, what kind of evidence each one is, and which pages rely on it. Every identifier is resolved against PubMed or Crossref on each build.';
+
+const compounds = await getCollection('compounds');
+const stopping = await getCollection('stopping');
+
+type Row = { citation: string; pmid?: string; doi?: string; url?: string; kind: string; year: number; where: { label: string; href: string }[] };
+const all = new Map<string, Row>();
+
+const add = (s: any, label: string, href: string) => {
+  const key = s.pmid ? `pmid:${s.pmid}` : s.doi ? `doi:${s.doi}` : `url:${s.url}`;
+  if (!all.has(key)) all.set(key, { ...s, where: [] });
+  const row = all.get(key)!;
+  if (!row.where.some((w) => w.href === href)) row.where.push({ label, href });
+};
+for (const c of compounds) for (const s of c.data.sources) add(s, c.data.name, `/compounds/${c.id}`);
+for (const p of stopping) for (const s of p.data.sources) add(s, p.data.title, `/stopping/${p.id}`);
+
+const rows = [...all.values()].sort((a, b) => b.year - a.year || a.citation.localeCompare(b.citation));
+
+const KIND_LABEL: Record<string, string> = {
+  'randomised-trial': 'Randomised trial', 'controlled-trial': 'Controlled trial',
+  observational: 'Observational study', 'systematic-review': 'Systematic review',
+  'case-report': 'Case report', 'case-series': 'Case series', animal: 'Animal study',
+  'in-vitro': 'Laboratory study', regulatory: 'Regulatory document',
+  'poison-centre': 'Poison-centre data', analytical: 'Product analysis', reference: 'Reference work',
+};
+const byKind = Object.entries(
+  rows.reduce<Record<string, number>>((acc, r) => ((acc[r.kind] = (acc[r.kind] ?? 0) + 1), acc), {})
+).sort((a, b) => b[1] - a[1]);
+
+const linkFor = (r: Row) =>
+  r.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${r.pmid}/` : r.doi ? `https://doi.org/${r.doi}` : r.url;
+---
+<BaseLayout title="Sources" description={description} path="/sources" wide>
+  <h1>Sources</h1>
+  <p class="lede">
+    Every citation used anywhere on this site — {rows.length} of them — with a stable identifier and a
+    label saying what kind of evidence it is, because “two case reports” and “a randomised trial” are
+    different things and should not read the same.
+  </p>
+  <p>
+    Every PMID and DOI here is resolved against PubMed or Crossref on each build, and the returned
+    title is compared with the citation printed below. A citation that does not resolve, or that turns
+    out to describe a different paper, fails the build. That does not make our reading of a paper
+    correct — it makes it impossible for a citation to be fabricated or to quietly rot.
+  </p>
+
+  <h2>What the evidence base actually consists of</h2>
+  <p>
+    Worth looking at before the list. Most of what is known about most of these compounds is case
+    reports and animal work, and that is itself one of the most important facts on this site.
+  </p>
+  <ul>
+    {byKind.map(([kind, n]) => <li><strong>{n}</strong> — {KIND_LABEL[kind] ?? kind}{n === 1 ? '' : 's'}</li>)}
+  </ul>
+
+  <h2>Full bibliography</h2>
+  <ol class="sources">
+    {rows.map((r) => (
+      <li>
+        <span class="source-kind">{KIND_LABEL[r.kind] ?? r.kind}, {r.year}.</span>{' '}
+        {r.citation}{' '}
+        <a href={linkFor(r)} rel="noopener nofollow">
+          {r.pmid ? `PMID ${r.pmid}` : r.doi ? `doi:${r.doi}` : 'link'}
+        </a>
+        <br />
+        <span class="source-kind">
+          Cited on {r.where.map((w, i) => <>{i > 0 && ', '}<a href={w.href}>{w.label}</a></>)}.
+        </span>
+      </li>
+    ))}
+  </ol>
+
+  <p class="review-note">
+    If a citation here is wrong, misread, or has been superseded,
+    <a href={`mailto:${SITE.correctionsAddress}`}>tell us</a> — corrections are
+    <a href="/about/corrections">published, not quietly edited</a>.
+  </p>
+</BaseLayout>

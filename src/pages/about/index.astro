@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { SITE, FUNDING_STATEMENT } from '../../lib/site.js';
+
+// SPEC 2 §11 — the editorial policy, published and linked from every page footer.
+const description =
+  'Who runs this site, why it exists, how it is funded (it is not), and the seven editorial rules it holds itself to — including no vendor money, no dosing information and no crisis line.';
+
+const compounds = await getCollection('compounds');
+const reviewers = await getCollection('reviewers');
+const unreviewed = compounds.filter((c) => !c.data.reviewedBy).length;
+---
+<BaseLayout title="About" description={description} path="/about">
+  <h1>About this site</h1>
+  <p class="lede">{SITE.tagline}</p>
+
+  <h2>Why it exists</h2>
+  <p>
+    Every ranking site in this space earns money from the vendors it ranks. Affiliate commission is
+    the only revenue model in the category. That produces a predictable result: an enormous amount of
+    content about which product to buy, and almost none about what happens afterwards.
+  </p>
+  <p>
+    A site that tells you not to buy something cannot be funded by the mechanism funding all of its
+    competitors. That is why this space was empty, and it is the only reason this site has anything to
+    say that the others do not.
+  </p>
+  <p>
+    The other half of the problem is the response to it. Most non-commercial writing about these
+    compounds is uniformly alarming, treats every substance as equivalently dangerous, and tells the
+    reader to consult a physician they do not have. Readers correctly discount both sides and end up
+    on forums, which is the worst of the available options.
+  </p>
+  <p>
+    So the standard this site holds itself to is narrow: <strong>be right about the things you can
+    already check.</strong> If you look up the compound you know about and find we have exaggerated
+    it, nothing else here deserves your time. That is why <a href="/compounds/creatine">creatine</a> is
+    rated low concern and says so plainly, and why the ratings are published as a
+    <a href="/how-we-rate">rubric you can argue with</a>.
+  </p>
+
+  <h2>Who runs it</h2>
+  <p>{SITE.operatorBio}</p>
+  <p>
+    It is one person. That is worth stating because it sets the limits of what this site can be, and
+    those limits are in the policy below.
+  </p>
+
+  <h2>Editorial policy</h2>
+
+  <h3>1. No vendor money, ever</h3>
+  <p class="funding">{FUNDING_STATEMENT}</p>
+  <p>
+    No affiliate links, no sponsorships, no advertising, no free product, no vendor-supplied content,
+    no paid placement, and no rehab or treatment-centre referral fees. There is no outbound link on
+    this site to anywhere you can buy anything. If that ever changes, this site has become the thing
+    it was built to replace and you should stop reading it.
+  </p>
+
+  <h3>2. No dosing information, anywhere</h3>
+  <p>
+    Not in prose, not in a quoted case report, not as “commonly reported” amounts, and not in a taper
+    schedule. This is enforced mechanically: every build is scanned for numeric-dose patterns and
+    fails if any are found. Exemptions require a written justification in a file that is part of the
+    repository.
+  </p>
+  <p>
+    The reason is specific rather than squeamish. Unsupervised tapering off a GABA-B agonist is
+    precisely the thing that goes wrong, and a page that appears to enable it does harm while looking
+    helpful.
+  </p>
+
+  <h3>3. No product recommendations</h3>
+  <p>
+    The site never tells you where to obtain anything, or which source is more trustworthy than another.
+    We have no way to know, and pretending otherwise would be the most dangerous thing on the site.
+  </p>
+
+  <h3>4. Named clinical review, or a visible notice that there isn’t any</h3>
+  {reviewers.length === 0 ? (
+    <p class="unreviewed">
+      <strong>No page on this site has yet been reviewed by a named clinician.</strong> All {compounds.length}
+      compound pages carry that notice on the page itself. Every claim is cited to published
+      literature and every citation is verified against PubMed or Crossref on each build, but that is
+      not the same as a medical professional having checked it, and we are not going to let a missing
+      byline imply one. Securing named clinical review is the outstanding requirement before this site
+      should be promoted anywhere.
+    </p>
+  ) : (
+    <>
+      <p>{unreviewed === 0 ? 'Every page is clinically reviewed.' : `${unreviewed} of ${compounds.length} compound pages are not yet clinically reviewed, and each says so on the page.`}</p>
+      <ul>
+        {reviewers.map((r) => (
+          <li>
+            <strong>{r.data.name}</strong>, {r.data.credentials} — {r.data.role}.
+            Declared conflicts: {r.data.conflicts}.
+            {r.data.verifyUrl && <> <a href={r.data.verifyUrl} rel="noopener">Verify registration</a>.</>}
+          </li>
+        ))}
+      </ul>
+    </>
+  )}
+
+  <h3>5. Corrections are published, not silently edited</h3>
+  <p>
+    Anyone can submit a correction to
+    <a href={`mailto:${SITE.correctionsAddress}`}>{SITE.correctionsAddress}</a>. If we were wrong, the
+    page is fixed and the fact that it was wrong stays visible in a dated
+    <a href="/about/corrections">corrections log</a>. You do not need credentials to submit one — if
+    you took something and our description of it is wrong, that is the hardest kind of correction to
+    get and the most valuable.
+  </p>
+
+  <h3>6. Crises are routed, never absorbed</h3>
+  <p>
+    There is no chat, no forum, no direct messaging and no “reach out any time” on this site. That is
+    not coldness; it is arithmetic. This is run by one person who cannot be a crisis line. Trying
+    would consume them and would eventually fail somebody at the moment it mattered most.
+  </p>
+  <p>
+    So the site routes instead: <a href="/emergency">Poison Control, emergency services, and the
+    crisis line</a>, all of which are free, staffed around the clock, and answered by people qualified
+    to help. That is a better outcome than anything this site could offer.
+  </p>
+
+  <h3>7. Nothing is collected about you</h3>
+  <p>
+    No accounts, no email capture, no newsletter, no forms, no cookies, no health data, and no
+    third-party requests of any kind. Fonts are the ones already on your device, so no request leaves
+    for a font either.
+  </p>
+  <p>
+    <strong>There is no analytics on this site at all</strong> — not Google, not a privacy-friendly
+    alternative, not the server-side kind. We considered it and decided against it. Knowing how many
+    people read a page is worth very little; the possibility of any reader believing their visit to a
+    withdrawal page was logged is worth a great deal more, and an absolute privacy claim is stronger
+    than a carefully-worded one.
+  </p>
+
+  <h2>How pages are built</h2>
+  <p>
+    Ratings, citations and review dates live in structured data, and the pages are generated from it,
+    so the bibliography cannot drift out of sync with the prose. Every build additionally fails if:
+    a page is missing a review date or a canonical URL, a rating cites a source that does not exist,
+    any internal link is broken, any JSON-LD does not parse, any page loads a third-party resource, or
+    the dose scanner finds a match. Every PMID and DOI is resolved against PubMed and Crossref and the
+    returned title is compared with the citation printed here.
+  </p>
+  <p>
+    None of that makes the site correct. It makes a specific set of ways to be wrong impossible, which
+    is the most a build process can do.
+  </p>
+
+  <h2>Maintenance, honestly</h2>
+  <p>
+    An unreviewed medical page with a three-year-old date on it is worse than no page. The commitment
+    here is a review of every page roughly quarterly, and the build warns and then fails as review
+    dates age. If you are reading this and the dates have gone stale, the site has failed on its own
+    terms and you should weigh it accordingly.
+  </p>
+
+  <h2>The related site</h2>
+  <p>
+    <a href={SITE.sister.url} rel="noopener">{SITE.sister.name}</a> is {SITE.sister.what}. It is
+    written for a different audience and it does not share any reader information with this one —
+    there are no tracking parameters on the link above, and neither site can characterise the other's
+    readers.
+  </p>
+</BaseLayout>

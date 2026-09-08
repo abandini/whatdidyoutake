@@ -1,0 +1,22 @@
+{
+  "name": "whatdidyoutake",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run gates && astro build && node scripts/emit-preview-headers.mjs && npm run gates:dist",
+    "build:unsafe": "astro build",
+    "preview": "astro preview",
+    "gates": "node scripts/gate-dosing.mjs && node scripts/gate-frontmatter.mjs",
+    "gates:dist": "node scripts/gate-html.mjs && node scripts/gate-links.mjs",
+    "gates:all": "npm run gates && npm run gates:dist",
+    "verify:citations": "node scripts/verify-citations.mjs",
+    "verify:outbound": "node scripts/gate-links.mjs --outbound",
+    "verify": "npm run gates:all && npm run verify:citations && npm run verify:outbound"
+  },
+  "devDependencies": {
+    "astro": "^7.3.1",
+    "yaml": "^2.9.0"
+  }
+}

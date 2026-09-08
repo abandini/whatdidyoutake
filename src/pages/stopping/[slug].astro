@@ -1,0 +1,77 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SourceList from '../../components/SourceList.astro';
+import ReviewFooter from '../../components/ReviewFooter.astro';
+import { prepareBody } from '../../lib/cite.js';
+import { SITE, HELPLINES } from '../../lib/site.js';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('stopping');
+  return pages.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+await render(entry); // populates entry.rendered
+const bodyHtml = prepareBody((entry as any).rendered?.html ?? '', d.sources, entry.id);
+const compound = await getEntry('compounds', d.compound.id);
+const path = `/stopping/${entry.id}`;
+const reviewer = d.reviewedBy ? await getEntry('reviewers', d.reviewedBy.id) : undefined;
+
+// Headings on these pages are the questions people actually type, so FAQPage
+// is the honest markup rather than a retrofit (SPEC 2 §12).
+const faq = [...((entry as any).rendered?.html ?? '').matchAll(/<h2[^>]*>(.*?)<\/h2>([\s\S]*?)(?=<h2|$)/g)]
+  .map((m) => ({ q: m[1].replace(/<[^>]+>/g, '').trim(), a: m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 900) }))
+  .filter((x) => x.q.includes('?'));
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'MedicalWebPage',
+      name: d.title,
+      url: `${SITE.url}${path}`,
+      description: d.summary,
+      inLanguage: 'en',
+      dateModified: d.lastReviewed.toISOString().slice(0, 10),
+      isAccessibleForFree: true,
+      about: { '@type': 'Substance', name: compound.data.name },
+      publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+      ...(reviewer ? { reviewedBy: { '@type': 'Person', name: reviewer.data.name, honorificSuffix: reviewer.data.credentials } } : {}),
+    },
+    ...(faq.length
+      ? [{
+          '@type': 'FAQPage',
+          mainEntity: faq.map((x) => ({
+            '@type': 'Question', name: x.q,
+            acceptedAnswer: { '@type': 'Answer', text: x.a },
+          })),
+        }]
+      : []),
+  ],
+};
+---
+<BaseLayout title={d.title} description={d.summary} path={path} jsonLd={jsonLd}>
+  <article>
+    <h1>{d.title}</h1>
+
+    {/* This page is a landing target for phenibutwithdrawal.org, so it assumes
+        no prior context and offers the way up rather than the way back. */}
+    <p class="callout callout--alarm">
+      <strong>If things are bad right now</strong>, go to <a href="/emergency">what to do in an emergency</a>.
+      Poison Control — <a class="tel" href={`tel:${HELPLINES.poison.tel}`}>{HELPLINES.poison.number}</a> —
+      is free, staffed around the clock by medical toxicologists, and is not law enforcement.
+    </p>
+
+    <Fragment set:html={bodyHtml} />
+
+    {d.sources.length > 0 && <SourceList sources={d.sources} />}
+
+    <p class="review-note">
+      Arrived here early rather than late? <a href={`/compounds/${compound.id}`}>What {compound.data.name.toLowerCase()} is,
+      what it does, and what the evidence shows</a>.
+    </p>
+    <ReviewFooter lastReviewed={d.lastReviewed} reviewedBy={d.reviewedBy?.id} />
+  </article>
+</BaseLayout>

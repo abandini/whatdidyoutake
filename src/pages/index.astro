@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RatingMatrix from '../components/RatingMatrix.astro';
+import { SITE, FUNDING_STATEMENT } from '../lib/site.js';
+
+// SPEC 2 §5 — the homepage does not sell the site. It routes. Three doors,
+// plainly labelled. Below the fold: the matrix, the funding statement, the
+// review status. Nothing else.
+const description =
+  'A compound-by-compound risk reference for people who are going to take these things anyway, written by someone who is not selling them anything. No vendor money, no affiliate links, no dosing information.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: SITE.name,
+      url: `${SITE.url}/`,
+      description,
+      inLanguage: 'en',
+      publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    },
+    {
+      '@type': 'Organization',
+      name: SITE.name,
+      url: SITE.url,
+      description: SITE.tagline,
+      funding: 'None. No vendor money, affiliate revenue, advertising or sponsorship.',
+    },
+  ],
+};
+---
+<BaseLayout title="Home" description={description} path="/" jsonLd={jsonLd} wide>
+  <h1>What did you take?</h1>
+  <p class="lede">
+    A compound-by-compound risk reference for people who are going to take these things anyway —
+    written by someone who is not selling them anything.
+  </p>
+
+  <ul class="doors">
+    <li>
+      <a href="/compounds">
+        I’m thinking about taking something
+        <span class="door-note">Twelve compounds, rated across six dimensions, with what the evidence
+        actually shows and what it does not.</span>
+      </a>
+    </li>
+    <li>
+      <a href="/emergency">
+        Something is going wrong right now
+        <span class="door-note">Who to call, and exactly what to tell an emergency department about a
+        compound they have not heard of.</span>
+      </a>
+    </li>
+    <li>
+      <a href="/family">
+        I’m worried about someone else
+        <span class="door-note">What you may be looking at, what to do first, and what not to do —
+        including the one action that makes things worse.</span>
+      </a>
+    </li>
+  </ul>
+
+  <p>
+    If you have been using something regularly and want to stop, start with
+    <a href="/am-i-dependent">am I dependent?</a> — no quiz, no score, no email address.
+  </p>
+
+  <h2>The ratings</h2>
+  <p>
+    Six independent dimensions, never averaged into a single number, because a compound can be
+    harmless in a single dose and cause permanent harm over a year, and one number would hide exactly
+    that.
+  </p>
+
+  <RatingMatrix />
+
+  <h2>Why you can believe this</h2>
+  <p class="funding">{FUNDING_STATEMENT}</p>
+  <p>
+    Every ranking site in this space earns its money from the vendors it ranks. This one has no
+    revenue, which is the only reason it is able to tell you not to buy something. If it ever takes
+    vendor money, an affiliate commission or a sponsored placement, it becomes the thing it replaced
+    and stops being worth reading. That is a promise you can check:
+    <a href="/about">the full editorial policy is published</a>, and
+    <a href="/about/corrections">corrections are logged rather than quietly edited</a>.
+  </p>
+  <p>
+    We also try to be right about the things you can already check. If you look up the compound you
+    know about and we have exaggerated it, nothing else here is worth your time — which is why
+    <a href="/compounds/creatine">creatine</a> is rated as low concern and says so plainly.
+  </p>
+</BaseLayout>

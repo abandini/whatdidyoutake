@@ -1,0 +1,26 @@
+# SPEC 3 §4. The CSP is deliberately strict and will break any third-party
+# embed. That is the intent — if something needs loosening, the something is
+# probably the thing to remove instead.
+#
+# style-src is 'self' with no 'unsafe-inline', which is why
+# build.inlineStylesheets is set to 'never' in astro.config.mjs. Changing one
+# without the other silently breaks every page.
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  X-Frame-Options: DENY
+
+# This page must survive a reader on a bad connection and must never serve a
+# stale crisis phone number. stale-if-error is the important directive: if a
+# build is broken, the edge keeps serving the last good copy for a week rather
+# than an error page. A slightly old version of this page is vastly better
+# than nothing.
+/emergency
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400, stale-if-error=604800
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

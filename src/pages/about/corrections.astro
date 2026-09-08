@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../lib/site.js';
+
+// SPEC 2 §11.5 — a dated correction log. Entries are appended, never removed:
+// the record of having been wrong is the point.
+const description =
+  'Every correction made to this site, dated, with what was wrong, what it says now, and who reported it. Corrections are published rather than quietly edited into the page.';
+
+interface Correction {
+  date: string; page: string; href: string; wrong: string; now: string; reportedBy: string;
+}
+const CORRECTIONS: Correction[] = [];
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+<BaseLayout title="Corrections" description={description} path="/about/corrections">
+  <h1>Corrections</h1>
+  <p class="lede">
+    When this site gets something wrong, the page is fixed and the fact that it was wrong stays here.
+    Entries are added, never removed.
+  </p>
+
+  {CORRECTIONS.length === 0 ? (
+    <p class="callout">
+      <strong>No corrections have been published yet.</strong> This site launched recently, so an empty
+      log means “nothing reported yet”, not “nothing wrong.” If you have found an error, it belongs
+      here — see below.
+    </p>
+  ) : (
+    <ol>
+      {CORRECTIONS.map((c) => (
+        <li>
+          <p>
+            <strong><time datetime={c.date}>{fmt.format(new Date(c.date))}</time></strong> —
+            <a href={c.href}>{c.page}</a>
+          </p>
+          <p><strong>What was wrong:</strong> {c.wrong}</p>
+          <p><strong>What it says now:</strong> {c.now}</p>
+          <p class="meta-list">Reported by {c.reportedBy}.</p>
+        </li>
+      ))}
+    </ol>
+  )}
+
+  <h2>How to submit a correction</h2>
+  <p>
+    Email <a href={`mailto:${SITE.correctionsAddress}`}>{SITE.correctionsAddress}</a>. There is no form
+    on this site and there never will be, because a form is a thing that collects data about you.
+  </p>
+  <p>What helps most, in rough order:</p>
+  <ul>
+    <li>The page, and the specific sentence.</li>
+    <li>What you think it should say.</li>
+    <li>A citation if you have one — a PMID, a DOI, or a regulatory document.</li>
+  </ul>
+  <p>
+    <strong>You do not need credentials.</strong> If you have taken one of these compounds and our
+    account of what it feels like is wrong, that is a correction we cannot get any other way and it is
+    the one we most want.
+  </p>
+
+  <h2>What happens then</h2>
+  <ul>
+    <li>If it is a factual error, the page is corrected and an entry is added here.</li>
+    <li>If it is a difference of interpretation, we will say so, and if the disagreement is reasonable we will note the uncertainty on the page rather than pick a side silently.</li>
+    <li>If we think you are wrong, we will say that too, and why.</li>
+  </ul>
+  <p>
+    This is run by one person, so a reply may take a while. A correction that affects reader safety
+    gets dealt with first.
+  </p>
+</BaseLayout>

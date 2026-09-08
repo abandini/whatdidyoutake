@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+.citation-cache.json
+.link-cache.json
+.DS_Store
+.wrangler/

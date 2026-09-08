@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const description =
+  'That page does not exist on this site. Here is where to go instead, including the emergency page if something is going wrong right now.';
+---
+<BaseLayout title="Page not found" description={description} path="/404" noindex>
+  <h1>That page isn’t here</h1>
+  <p class="lede">Either the address is wrong, or it never existed. Nothing on this site has been taken down.</p>
+  <ul class="doors">
+    <li><a href="/emergency">Something is going wrong right now<span class="door-note">Who to call, and what to tell an emergency department.</span></a></li>
+    <li><a href="/compounds">All twelve compounds<span class="door-note">Rated across six dimensions, with sources.</span></a></li>
+    <li><a href="/am-i-dependent">Am I dependent?<span class="door-note">No quiz, no score, no email address.</span></a></li>
+    <li><a href="/family">I’m worried about someone else<span class="door-note">What you may be looking at, and what not to do.</span></a></li>
+  </ul>
+</BaseLayout>

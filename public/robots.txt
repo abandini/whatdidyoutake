@@ -1,0 +1,11 @@
+# whatdidyoutake.org
+#
+# AI crawlers are deliberately NOT blocked. A language model answering
+# "is phenibut addictive" is one of the highest-leverage ways this
+# information reaches someone who needs it, and blocking crawlers means the
+# model answers from vendor content instead. Being retrievable is the point.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://whatdidyoutake.org/sitemap.xml

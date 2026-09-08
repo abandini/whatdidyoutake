@@ -1,0 +1,99 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BandBadge from '../../components/BandBadge.astro';
+import RiskProfile from '../../components/RiskProfile.astro';
+import SourceList from '../../components/SourceList.astro';
+import ReviewFooter from '../../components/ReviewFooter.astro';
+import { splitH2Sections } from '../../lib/split-sections.js';
+import { prepareBody } from '../../lib/cite.js';
+import { AUTHORED_SECTIONS } from '../../lib/page-structure.js';
+import { bandByKey } from '../../lib/rating-system.js';
+import { SITE } from '../../lib/site.js';
+
+export async function getStaticPaths() {
+  const compounds = await getCollection('compounds');
+  return compounds.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const d = entry.data;
+await render(entry); // populates entry.rendered
+const sections = splitH2Sections((entry as any).rendered?.html ?? '')
+  .map((chunk) => prepareBody(chunk, d.sources, entry.id));
+
+if (sections.length !== AUTHORED_SECTIONS.length) {
+  throw new Error(
+    `${entry.id}: expected ${AUTHORED_SECTIONS.length} authored sections, found ${sections.length}. ` +
+    `The fixed section order in SPEC 2 §6 is enforced by scripts/gate-frontmatter.mjs.`
+  );
+}
+
+const band = bandByKey(d.band);
+const path = `/compounds/${entry.id}`;
+const reviewer = d.reviewedBy ? await getEntry('reviewers', d.reviewedBy.id) : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: `${d.name}: what it does, what the evidence shows, and what the risk actually is`,
+  url: `${SITE.url}${path}`,
+  description: d.summary,
+  inLanguage: 'en',
+  dateModified: d.lastReviewed.toISOString().slice(0, 10),
+  isAccessibleForFree: true,
+  audience: { '@type': 'Audience', audienceType: 'People considering or already using this compound, and their families' },
+  about: { '@type': d.schemaType, name: d.name, alternateName: d.otherNames, description: d.verdict },
+  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+  citation: d.sources.map((s) => ({
+    '@type': 'ScholarlyArticle',
+    name: s.citation,
+    datePublished: String(s.year),
+    ...(s.pmid ? { identifier: `PMID:${s.pmid}`, url: `https://pubmed.ncbi.nlm.nih.gov/${s.pmid}/` } : {}),
+    ...(s.doi ? { identifier: `doi:${s.doi}`, url: `https://doi.org/${s.doi}` } : {}),
+  })),
+  ...(reviewer
+    ? { reviewedBy: { '@type': 'Person', name: reviewer.data.name, honorificSuffix: reviewer.data.credentials, jobTitle: reviewer.data.role } }
+    : {}),
+};
+---
+<BaseLayout title={d.name} description={d.summary} path={path} jsonLd={jsonLd}>
+  <article>
+    <p class="meta-list"><a href="/compounds">All compounds</a></p>
+    <h1>{d.name}</h1>
+    {d.otherNames.length > 0 && (
+      <p class="meta-list">Also sold as {d.otherNames.join(', ')}. {d.chemicalClass}.</p>
+    )}
+
+    {/* SPEC 2 §6.1 — the one-sentence verdict, above the fold, before anything else. */}
+    <p><BandBadge band={d.band} /></p>
+    <p class="verdict">{d.verdict}</p>
+
+    {/* §6.2–4 — what it is, what it does, what the evidence shows. Efficacy before
+        cost: the honest account of why people take it comes before any risk content. */}
+    <Fragment set:html={sections[0]} />
+    <Fragment set:html={sections[1]} />
+    <Fragment set:html={sections[2]} />
+
+    {/* §6.5 — the six-dimension profile, generated from frontmatter so it cannot
+        drift out of sync with the prose or the bibliography. */}
+    <h2 id="risk-profile">The risk profile</h2>
+    <p><BandBadge band={d.band} /> — {band.gloss}</p>
+    <RiskProfile ratings={d.ratings} name={d.name} />
+
+    {/* §6.6–8 — from the inside, interactions, if you are already using it. */}
+    <Fragment set:html={sections[3]} />
+    <Fragment set:html={sections[4]} />
+    <Fragment set:html={sections[5]} />
+
+    {d.stoppingPage && (
+      <p class="callout callout--alarm">
+        <strong>If you have been using this regularly and want to stop:</strong>{' '}
+        <a href={d.stoppingPage}>read this first</a>. Stopping abruptly is the part that goes wrong.
+      </p>
+    )}
+
+    <SourceList sources={d.sources} />
+    <ReviewFooter lastReviewed={d.lastReviewed} reviewedBy={d.reviewedBy?.id} />
+  </article>
+</BaseLayout>

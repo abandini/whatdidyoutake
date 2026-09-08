@@ -1,0 +1,28 @@
+---
+// SPEC 2 §11.4 — named clinical review on every medical claim, with credentials
+// published. Where a page is unreviewed, the page says so, visibly, rather than
+// letting an absent byline read as an implicit one.
+import { getEntry } from 'astro:content';
+
+interface Props { lastReviewed: Date; reviewedBy?: string; }
+const { lastReviewed, reviewedBy } = Astro.props;
+const reviewer = reviewedBy ? await getEntry('reviewers', reviewedBy) : undefined;
+const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+{!reviewer && (
+  <p class="unreviewed">
+    <strong>This page has not yet been reviewed by a clinician.</strong> It was written from the
+    published literature and every claim is cited, but no named medical professional has checked it.
+    We say so here rather than let a missing byline read as an implicit one.
+  </p>
+)}
+<p class="review-note">
+  {reviewer && (
+    <>
+      Clinically reviewed by <strong>{reviewer.data.name}</strong>, {reviewer.data.credentials} —
+      {' '}{reviewer.data.role}. Declared conflicts: {reviewer.data.conflicts}.<br />
+    </>
+  )}
+  Last reviewed <time datetime={lastReviewed.toISOString().slice(0, 10)}>{fmt.format(lastReviewed)}</time>.
+  {' '}Found something wrong? <a href="/about/corrections">Corrections are published, not silently edited</a>.
+</p>

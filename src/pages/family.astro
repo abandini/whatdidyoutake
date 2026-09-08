@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, HELPLINES } from '../lib/site.js';
+
+// SPEC 2 §10 — for the reader who found something and does not know what it is.
+// Practical, not frightening, and specific about the one action that makes
+// things worse.
+const description =
+  'You found something and you do not know what it is. What you may be looking at, how to identify it without a confrontation, what to do first, and the one thing not to do.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'If you are worried about someone else',
+  url: `${SITE.url}/family`,
+  description,
+  inLanguage: 'en',
+  isAccessibleForFree: true,
+  publisher: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+};
+---
+<BaseLayout title="If you're worried about someone else" description={description} path="/family" jsonLd={jsonLd}>
+  <h1>If you’re worried about someone else</h1>
+  <p class="lede">
+    You have probably found something, or noticed someone changing, and everything you have read so
+    far has told you to be afraid without telling you what to do. This page is the second part.
+  </p>
+
+  <p class="callout callout--alarm">
+    <strong>If they are unwell right now</strong> — unconscious, not breathing normally, seizing,
+    confused, or unrousable — <a href="/emergency">go here</a> or call
+    <a class="tel" href={`tel:${HELPLINES.emergency.tel}`}>911</a>.
+  </p>
+
+  <h2>Start here: call Poison Control, even with no emergency</h2>
+  <p>
+    <a class="tel" href={`tel:${HELPLINES.poison.tel}`}>{HELPLINES.poison.number}</a> — free, 24 hours,
+    staffed by medical toxicologists.
+  </p>
+  <p>
+    Almost nobody knows this: <strong>they answer identification questions.</strong> You do not need an
+    emergency, and you do not need a name — you can describe a powder, read out a label, or describe a
+    vial. This is a normal call for them and it is what the service exists for.
+  </p>
+  <p>
+    <strong>They are not law enforcement.</strong> They do not report you or the person you are calling
+    about. This is the single most useful and least used resource available to you.
+  </p>
+
+  <h2>What you may be looking at</h2>
+  <p>
+    The things covered on this site do not look like drugs. That is most of why they are missed.
+  </p>
+  <ul>
+    <li><strong>Unlabelled white or off-white powder</strong>, often in a resealable bag or a plain plastic tub. Frequently with a scoop.</li>
+    <li><strong>A small digital scale</strong>, the jewellery kind that measures very small amounts. On its own this is one of the strongest signals, because these compounds are measured rather than counted.</li>
+    <li><strong>Small glass vials of powder</strong>, sometimes with rubber stoppers, alongside a bottle of clear liquid and insulin syringes. This is peptide territory — see <a href="/compounds/bpc-157">BPC-157</a>, <a href="/compounds/melanotan-ii">melanotan II</a>, <a href="/compounds/gray-market-glp-1">gray-market GLP-1s</a>.</li>
+    <li><strong>Bags or bottles labelled with a chemical name and a code</strong> — RAD-140, LGD-4033, MK-2866, GW-501516, MK-677. Often carrying the words <em>“for research purposes only, not for human consumption.”</em> That phrase is a legal shield, not a description of what anyone intends.</li>
+    <li><strong>Packages from research-chemical or peptide vendors</strong>, usually plain, often from overseas, arriving regularly.</li>
+    <li><strong>Small brightly-branded bottles or blister packs from a petrol station or smoke shop</strong>, sold as mood or energy supplements. This is where <a href="/compounds/tianeptine">tianeptine</a> lives, and it is an opioid.</li>
+    <li><strong>Green powder or capsules, or small “shot” bottles</strong> — likely <a href="/compounds/kratom">kratom</a>.</li>
+  </ul>
+
+  <h2>How to find out what it is, without a confrontation</h2>
+  <ul>
+    <li><strong>Search the exact name on the label</strong>, including any numbers and hyphens, and look it up on this site or anywhere else.</li>
+    <li><strong>Check the order history</strong> — email confirmations and card statements name the vendor, and the vendor's site names the product.</li>
+    <li><strong>Photograph what you found</strong> and put it back. You will want the picture when you talk to someone, and a photograph does not tip anyone off.</li>
+    <li><strong>Call Poison Control and describe it.</strong> Genuinely, this works.</li>
+  </ul>
+  <p>
+    Something to bear in mind before you decide how serious this is: the median person buying these is
+    an adult in their twenties or thirties, usually trying to fix something specific — anxiety, an
+    injury that will not heal, weight, or being unable to sleep. Understanding the problem they were
+    trying to solve will get you further than anything else in this section.
+  </p>
+
+  <h2>What not to do</h2>
+  <p class="callout callout--alarm">
+    <strong>Do not flush or throw away a supply that someone is physically dependent on.</strong>
+  </p>
+  <p>
+    This is the instinct almost everyone has, and with some compounds it is the single most dangerous
+    thing you can do. With alcohol, benzodiazepines and <a href="/compounds/phenibut">phenibut</a>,
+    abrupt withdrawal can cause seizures and delirium and has put people in intensive care. Taking
+    away the supply does not produce a person who stops. It produces a person in acute withdrawal who
+    now cannot tell you what is happening, and who will replace it within hours from a worse source.
+  </p>
+  <p>Also worth avoiding:</p>
+  <ul>
+    <li><strong>Do not lead with anger or disappointment.</strong> Not because their feelings matter more than the situation, but because it reliably produces concealment — and concealment is the thing that kills people, since it means nobody knows what is in them when it matters.</li>
+    <li><strong>Do not present it as a choice between the substance and you.</strong> If they are dependent, they cannot win that, and the outcome is usually that they stop telling you things.</li>
+    <li><strong>Do not assume it is an emergency</strong>, and do not assume it is not. That is what the Poison Control call is for.</li>
+  </ul>
+
+  <h2>How to talk about it</h2>
+  <p>
+    The goal of the conversation is not that they feel bad this time. It is <strong>that they tell you
+    the truth next time</strong> — because the moment that decides how this ends is the one where
+    something has gone wrong and they have to choose whether to say so.
+  </p>
+  <p>Things that tend to work:</p>
+  <ul>
+    <li>Say what you found and that you looked it up, plainly, without a speech.</li>
+    <li>Ask what it does for them. Take the answer seriously — most of these compounds work, which is the part that scare campaigns get wrong and which they know perfectly well.</li>
+    <li>Say the specific thing you are worried about, rather than a general one. “I read that stopping this suddenly can cause seizures” lands. “Drugs ruin lives” does not.</li>
+    <li>Ask what they would want you to do if something went wrong, and agree it in advance. This is the most useful sentence available to you.</li>
+    <li>Say once, clearly, that you will not be angry if they need help at three in the morning — and then be right about that.</li>
+  </ul>
+  <p>
+    If they say they want to stop, the useful next step is <a href="/am-i-dependent">this page</a>, and
+    then the stopping page for whatever it is. Do not let them stop abruptly on their own.
+  </p>
+
+  <h2>The money and insurance problem</h2>
+  <p>
+    “Get them to a doctor” is not actionable for a lot of families, so here is what actually exists.
+  </p>
+  <ul>
+    <li><strong>Poison Control, <span class="tel">{HELPLINES.poison.number}</span></strong> — free, no insurance, no questions, at any hour.</li>
+    <li><strong>SAMHSA National Helpline, <span class="tel">{HELPLINES.samhsa.number}</span></strong> — free and confidential, refers to treatment regardless of ability to pay. Directory at <a href="https://findtreatment.gov/" rel="noopener">findtreatment.gov</a>.</li>
+    <li><strong>Federally qualified health centres</strong> must charge on a sliding scale based on income. No money and no insurance does not make someone ineligible, and many can prescribe addiction treatment directly.</li>
+    <li><strong>Medicaid in expansion states</strong> covers adults on income alone — no asset test, and no waiting for an open enrolment window, because a change in income or loss of coverage opens enrolment at any time. A great many people who assume they cannot qualify, do.</li>
+    <li><strong>Emergency departments</strong> can begin treatment and refer onward, and cannot turn someone away for inability to pay.</li>
+  </ul>
+
+  <h2>One last thing</h2>
+  <p>
+    You are not going to be able to supervise this, and trying to will exhaust you without changing
+    the outcome. The things that actually help are narrow and worth more than vigilance: they know you
+    will pick up the phone, they know you will not be angry, and somebody in the house knows what they
+    are taking so that an emergency department can be told.
+  </p>
+  <p>
+    If you want to understand what they are taking, <a href="/compounds">start here</a>.
+  </p>
+</BaseLayout>

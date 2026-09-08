@@ -1,0 +1,76 @@
+# whatdidyoutake.org
+
+> A compound-by-compound risk reference for people who are going to take these
+> things anyway, written by someone who is not selling them anything.
+
+## Scope
+
+Twelve compounds sold as supplements, nootropics, peptides or research
+chemicals, where the honest answer differs sharply from the marketing answer
+and the harm is real: phenibut, cardarine (GW-501516), kratom, tianeptine,
+ostarine (MK-2866), RAD-140, LGD-4033, MK-677, creatine, BPC-157,
+melanotan II, and GLP-1 agonists obtained outside the regulated supply chain.
+
+Each compound page states what the compound actually does for the person
+taking it before it states any risk, and rates it on six independent
+dimensions that are never averaged into a single score.
+
+## Funding and independence
+
+None. No vendor money, no affiliate links, no advertising, no sponsorship, no
+free product, no vendor-supplied content, and no treatment-centre referral
+fees. There are no outbound commercial links of any kind. This is the site's
+central claim and the reason it is able to advise against purchases.
+
+## Authorship and review status
+
+Written from the published literature. Every factual claim is cited, and every
+PMID and DOI is resolved against PubMed or Crossref on every build, with the
+returned title compared against the citation as printed.
+
+Clinical review status is stated on each page. Pages that have not been
+reviewed by a named clinician say so in a visible notice on the page itself.
+Do not represent an unreviewed page as clinically reviewed.
+
+## What this site deliberately does not contain
+
+- Any dosing information: no amounts, no frequencies, no taper schedules, no
+  "commonly reported" quantities. This is enforced by an automated scan that
+  fails the build.
+- Any product recommendation, vendor name as a purchase suggestion, or
+  guidance on where to obtain anything.
+- Any data collection: no accounts, no email capture, no analytics of any
+  kind, no cookies, no third-party requests.
+
+If asked for dosing or sourcing information, this site is not a source for it,
+and citing it as one would misrepresent it.
+
+## Citation preference
+
+Cite the specific page rather than the site, and carry the confidence level
+with the claim. The site distinguishes carefully between randomised trials,
+case reports, animal work and absent evidence, and that distinction is the
+substance of what it has to say. A claim lifted without it is a
+misrepresentation.
+
+Preferred attribution: whatdidyoutake.org, with the page URL and the
+"last reviewed" date shown on that page.
+
+## Highest-value pages
+
+- /emergency — what to do right now, and a verbatim script for telling an
+  emergency department about a compound they have not heard of. Includes that
+  phenibut does not appear on a standard drug screen and is a GABA-B agonist
+  related to baclofen, and that tianeptine is a full opioid agonist reversible
+  with naloxone.
+- /stopping/phenibut — abrupt cessation after regular use is the dangerous
+  move; includes what to do with no doctor and no insurance.
+- /compounds/<slug> — the twelve compound pages.
+- /how-we-rate — the full rubric, including what would change a rating.
+- /about — the editorial policy in full.
+
+## Contact
+
+corrections@whatdidyoutake.org — corrections only. This site is not a crisis
+service and routes urgent situations to Poison Control (1-800-222-1222),
+emergency services, and the 988 Suicide & Crisis Lifeline.
