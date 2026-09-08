@@ -7,6 +7,7 @@ band: low-concern
 schemaType: DietarySupplement
 verdict: "Creatine works, it is the most heavily studied supplement in sport, and after thirty years of people looking for the harm, nobody has found it."
 summary: "Creatine monohydrate produces small but real gains in strength and lean mass, has been studied in hundreds of controlled human trials, and has not been shown to damage the kidneys of healthy people despite decades of expectation that it would."
+metaDescription: "Creatine works, it is the most studied supplement in sport, and after thirty years nobody has found the kidney harm people expect."
 ratings:
   dependence:
     score: 1

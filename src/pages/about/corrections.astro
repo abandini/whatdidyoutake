@@ -5,7 +5,7 @@ import { SITE } from '../../lib/site.js';
 // SPEC 2 §11.5 — a dated correction log. Entries are appended, never removed:
 // the record of having been wrong is the point.
 const description =
-  'Every correction made to this site, dated, with what was wrong, what it says now, and who reported it. Corrections are published rather than quietly edited into the page.';
+  'Every correction made to this site, dated, with what was wrong and what it says now. Published rather than quietly edited.';
 
 interface Correction {
   date: string; page: string; href: string; wrong: string; now: string; reportedBy: string;

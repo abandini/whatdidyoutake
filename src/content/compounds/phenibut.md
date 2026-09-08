@@ -7,6 +7,7 @@ band: evidence-says-dont
 schemaType: Substance
 verdict: "Phenibut works — it genuinely and noticeably reduces anxiety, which is exactly the problem, because tolerance builds within weeks and stopping after regular use can produce a withdrawal severe enough to require hospitalisation."
 summary: "Phenibut is a GABA-B agonist developed in the Soviet Union that reliably reduces social anxiety. Regular use produces tolerance within days to weeks and physical dependence, and abrupt cessation has repeatedly caused agitation, insomnia, delirium and psychosis requiring inpatient treatment."
+metaDescription: "Phenibut genuinely reduces anxiety — which is the problem. Tolerance builds in weeks and stopping can require hospital treatment."
 ratings:
   dependence:
     score: 5

@@ -17,7 +17,8 @@ interface Props {
 
 const { title, description, path, isEmergency = false, wide = false, jsonLd, noindex = false } = Astro.props;
 const canonical = path === '/' ? `${SITE.url}/` : `${SITE.url}${path}`;
-const fullTitle = path === '/' ? `${SITE.name} — ${SITE.tagline}` : `${title} — ${SITE.name}`;
+// Kept short enough to survive SERP truncation (~60 chars).
+const fullTitle = path === '/' ? `${SITE.name} — honest risk reference` : `${title} — ${SITE.name}`;
 ---
 <html lang="en">
   <head>

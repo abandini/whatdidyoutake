@@ -2,6 +2,7 @@
 compound: tianeptine
 title: Stopping tianeptine
 summary: "Tianeptine withdrawal is an opioid withdrawal, and a severe one. It is not usually life-threatening the way alcohol or phenibut withdrawal can be, and the standard opioid treatments — buprenorphine and methadone — work for it."
+metaDescription: "Tianeptine withdrawal is an opioid withdrawal, and the standard treatments — buprenorphine and methadone — work for it."
 lastReviewed: 2026-09-08
 queries:
   - tianeptine withdrawal

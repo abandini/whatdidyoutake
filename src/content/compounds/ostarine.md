@@ -7,6 +7,7 @@ band: real-tradeoffs
 schemaType: Substance
 verdict: "Ostarine is the most thoroughly studied SARM and it did produce real lean-mass gains in proper clinical trials — and it suppressed testosterone in those same trials, which is the main thing people take SARMs to avoid."
 summary: "Ostarine (enobosarm) reached phase 3 trials for muscle wasting and demonstrably increases lean body mass, but it suppresses endogenous testosterone, has published case reports of liver injury in healthy young men, was never approved anywhere, and roughly half of products sold as SARMs do not contain what the label says."
+metaDescription: "Ostarine is the most studied SARM and did build lean mass in trials. It also suppressed testosterone in those same trials."
 ratings:
   dependence:
     score: 1

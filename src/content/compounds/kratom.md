@@ -7,6 +7,7 @@ band: real-tradeoffs
 schemaType: Substance
 verdict: "Kratom leaf does what people take it for and is a genuinely different proposition from heroin or oxycodone — but it produces real opioid-type dependence, and the concentrated 7-hydroxymitragynine products now sold in the same shops are a far more dangerous thing wearing the same name."
 summary: "Kratom is a leaf containing partial μ-opioid agonists. It relieves pain and opioid withdrawal and many people use it successfully to stay off stronger opioids, but regular use produces physical dependence with an opioid-type withdrawal, and concentrated 7-hydroxymitragynine extracts carry substantially higher risk than the leaf."
+metaDescription: "Kratom leaf does what people take it for and causes real opioid-type dependence. The new 7-OH concentrates are a different drug."
 ratings:
   dependence:
     score: 4

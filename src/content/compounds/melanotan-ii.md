@@ -7,6 +7,7 @@ band: serious-risk
 schemaType: Substance
 verdict: "Melanotan II tans you without the sun, which is genuinely what people want from it — by driving the exact cells that become melanoma, in people who then find their moles have changed and cannot tell whether it matters."
 summary: "Melanotan II is an unapproved α-MSH analogue that produces skin darkening without sun exposure. Published case reports repeatedly describe new and changing moles during use, including dysplastic lesions, and it is injected as an unregulated peptide the user prepares themselves."
+metaDescription: "Melanotan II tans you without the sun by driving the exact cells that become melanoma — then your moles start changing."
 ratings:
   dependence:
     score: 1

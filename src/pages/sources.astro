@@ -6,7 +6,7 @@ import { SITE } from '../lib/site.js';
 // SPEC 2 §5 — the full bibliography, assembled from the same frontmatter the
 // compound pages cite, so it cannot drift out of sync with them.
 const description =
-  'Every source cited anywhere on this site, with PMID or DOI, what kind of evidence each one is, and which pages rely on it. Every identifier is resolved against PubMed or Crossref on each build.';
+  'Every source cited on this site, with PMID or DOI and what kind of evidence it is. All are verified against PubMed on each build.';
 
 const compounds = await getCollection('compounds');
 const stopping = await getCollection('stopping');

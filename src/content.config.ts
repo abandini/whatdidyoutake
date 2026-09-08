@@ -38,8 +38,12 @@ const compounds = defineCollection({
     band: z.enum(BAND_KEYS as [string, ...string[]]),
     /** SPEC 2 §6.1 — above the fold, before anything else. One sentence. */
     verdict: z.string().min(40),
-    /** Used as the <title> and as the AI-retrievable summary. */
+    /** The AI-retrievable summary: self-contained, meaningful lifted out of
+     *  context, used for JSON-LD description. Length is not constrained. */
     summary: z.string().min(60),
+    /** The SERP snippet. Different job from `summary` — must survive Google's
+     *  ~160-character truncation, so it is capped rather than merely short. */
+    metaDescription: z.string().min(70).max(158),
     ratings: z.object(
       Object.fromEntries(DIMENSION_KEYS.map((k) => [k, rating])) as Record<string, typeof rating>
     ),
@@ -63,6 +67,7 @@ const stopping = defineCollection({
     compound: reference('compounds'),
     title: z.string(),
     summary: z.string().min(60),
+    metaDescription: z.string().min(70).max(158),
     lastReviewed: z.coerce.date(),
     reviewedBy: reference('reviewers').optional(),
     sources: z.array(source).default([]),

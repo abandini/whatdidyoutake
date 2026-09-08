@@ -2,6 +2,7 @@
 compound: phenibut
 title: Stopping phenibut
 summary: "Abrupt cessation after regular phenibut use is the dangerous move — published cases include seizures, delirium and psychosis. This page explains why, what the literature describes clinicians doing, and how to find someone to supervise it if you do not have a doctor."
+metaDescription: "Stopping phenibut suddenly after regular use is the dangerous move — published cases include seizures and delirium. What to do instead."
 lastReviewed: 2026-09-08
 queries:
   - phenibut withdrawal how long

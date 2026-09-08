@@ -78,8 +78,20 @@ for (const file of pages) {
 
   // --- basic document quality ---
   if (!/<html[^>]+lang=/i.test(html)) fail(f, 'missing lang attribute on <html>');
-  if (!/<title>[^<]{5,}<\/title>/i.test(head)) fail(f, 'missing or trivial <title>');
-  if (!/<meta\s+name=["']description["']\s+content=["'][^"']{40,}/i.test(head)) fail(f, 'missing or too-short meta description');
+  // Title and description are graded against what a search result actually
+  // shows. Over-long ones are not penalised but they truncate, which wastes the
+  // one line of persuasion the site gets in a result page.
+  const titleTag = (head.match(/<title>([^<]*)<\/title>/i) || [])[1];
+  if (!titleTag || titleTag.length < 10) fail(f, 'missing or trivial <title>');
+  else if (titleTag.length > 65) fail(f, `<title> is ${titleTag.length} chars; it truncates in search results above ~65`);
+
+  const metaDesc = (head.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i) || [])[1];
+  if (!metaDesc || metaDesc.length < 70) fail(f, `meta description is ${metaDesc ? metaDesc.length : 0} chars; too short to earn the snippet`);
+  else if (metaDesc.length > 165) fail(f, `meta description is ${metaDesc.length} chars; it truncates above ~165`);
+
+  // og:url must agree with canonical or shares and search disagree about the page.
+  const ogUrl = (head.match(/<meta\s+property=["']og:url["']\s+content=["']([^"']+)["']/i) || [])[1];
+  if (canon && ogUrl && ogUrl !== canon[1]) fail(f, `og:url (${ogUrl}) does not match canonical (${canon[1]})`);
 
   // --- JSON-LD must parse (SPEC 3 §7) ---
   const ld = [...html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];

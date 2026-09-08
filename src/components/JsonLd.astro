@@ -1,0 +1,8 @@
+---
+// Structured data helpers. AI retrieval is the second distribution channel for
+// this site and may become the first (SPEC 2 §12), so the markup has to describe
+// the evidence accurately rather than just decorate the page.
+interface Props { data: unknown; }
+const { data } = Astro.props;
+---
+<script type="application/ld+json" set:html={JSON.stringify(data)} />

@@ -7,6 +7,7 @@ band: evidence-says-dont
 schemaType: Substance
 verdict: "Tianeptine is a prescription antidepressant in France that turns out to be a full opioid agonist, and the version sold in American petrol stations as a mood supplement produces opioid dependence in people who have no idea they are taking an opioid."
 summary: "Tianeptine is a licensed antidepressant in several countries that acts as a full agonist at the μ-opioid receptor. Sold in the United States as an unapproved supplement, it has produced a steep rise in poison-centre calls, seizures, opioid dependence, overdoses reversed by naloxone, and neonatal withdrawal syndrome."
+metaDescription: "Tianeptine is a prescription antidepressant that is also a full opioid agonist — sold in US petrol stations as a mood supplement."
 ratings:
   dependence:
     score: 5

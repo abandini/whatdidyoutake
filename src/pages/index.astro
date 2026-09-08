@@ -7,7 +7,7 @@ import { SITE, FUNDING_STATEMENT } from '../lib/site.js';
 // plainly labelled. Below the fold: the matrix, the funding statement, the
 // review status. Nothing else.
 const description =
-  'A compound-by-compound risk reference for people who are going to take these things anyway, written by someone who is not selling them anything. No vendor money, no affiliate links, no dosing information.';
+  'A compound-by-compound risk reference for people who are going to take these things anyway. No vendor money, no affiliate links, no dosing information.';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -22,10 +22,22 @@ const jsonLd = {
     },
     {
       '@type': 'Organization',
+      '@id': `${SITE.url}/#organization`,
       name: SITE.name,
       url: SITE.url,
       description: SITE.tagline,
+      sameAs: ['https://github.com/abandini/whatdidyoutake'],
+      founder: { '@type': 'Person', name: SITE.operator },
+      // Stated in machine-readable form because "who pays for this" is the
+      // single most load-bearing fact about the site (SPEC 2 §1).
       funding: 'None. No vendor money, affiliate revenue, advertising or sponsorship.',
+      publishingPrinciples: `${SITE.url}/about`,
+      correctionsPolicy: `${SITE.url}/about/corrections`,
+      ethicsPolicy: `${SITE.url}/about`,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` }],
     },
   ],
 };

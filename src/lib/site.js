@@ -24,6 +24,9 @@ export const SITE = {
   /** SPEC 3 §6 — decided: no analytics at all on this site. Stated in /about. */
   analytics: false,
 
+  /** IndexNow key, mirrored at /<key>.txt so Bing and Yandex can verify it. */
+  indexNowKey: '70be695f1a2c4d0ea1bd6b2a08f9fbcd',
+
   sister: {
     name: 'poisonphenibut.com',
     url: 'https://poisonphenibut.com',

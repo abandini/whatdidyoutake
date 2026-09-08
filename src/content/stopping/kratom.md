@@ -2,6 +2,7 @@
 compound: kratom
 title: Stopping kratom
 summary: "Kratom withdrawal is an opioid-type withdrawal: genuinely unpleasant, and — unlike phenibut or alcohol — not usually medically dangerous. That changes what your options are, and it means gradual reduction and proper opioid-withdrawal treatments are both on the table."
+metaDescription: "Kratom withdrawal is opioid-type: unpleasant, and not usually medically dangerous. That changes what your options are."
 lastReviewed: 2026-09-08
 queries:
   - kratom withdrawal how long

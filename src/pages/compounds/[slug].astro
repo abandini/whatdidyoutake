@@ -35,6 +35,7 @@ const reviewer = d.reviewedBy ? await getEntry('reviewers', d.reviewedBy.id) : u
 
 const jsonLd = {
   '@context': 'https://schema.org',
+  '@graph': [{
   '@type': 'MedicalWebPage',
   name: `${d.name}: what it does, what the evidence shows, and what the risk actually is`,
   url: `${SITE.url}${path}`,
@@ -52,12 +53,26 @@ const jsonLd = {
     ...(s.pmid ? { identifier: `PMID:${s.pmid}`, url: `https://pubmed.ncbi.nlm.nih.gov/${s.pmid}/` } : {}),
     ...(s.doi ? { identifier: `doi:${s.doi}`, url: `https://doi.org/${s.doi}` } : {}),
   })),
+  // schema.org's own property for a medical page's review date, which is more
+  // precise than dateModified alone and is what consumers of medical markup read.
+  lastReviewed: d.lastReviewed.toISOString().slice(0, 10),
+  medicalAudience: ['Patient', 'Caregiver'],
+  significantLink: [`${SITE.url}/emergency`, ...(d.stoppingPage ? [`${SITE.url}${d.stoppingPage}`] : [])],
   ...(reviewer
     ? { reviewedBy: { '@type': 'Person', name: reviewer.data.name, honorificSuffix: reviewer.data.credentials, jobTitle: reviewer.data.role } }
     : {}),
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Compounds', item: `${SITE.url}/compounds` },
+      { '@type': 'ListItem', position: 3, name: d.name, item: `${SITE.url}${path}` },
+    ],
+  }],
 };
 ---
-<BaseLayout title={d.name} description={d.summary} path={path} jsonLd={jsonLd}>
+<BaseLayout title={d.name} description={d.metaDescription} path={path} jsonLd={jsonLd}>
   <article>
     <p class="meta-list"><a href="/compounds">All compounds</a></p>
     <h1>{d.name}</h1>

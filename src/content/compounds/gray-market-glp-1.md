@@ -7,6 +7,7 @@ band: serious-risk
 schemaType: Substance
 verdict: "Semaglutide and tirzepatide are among the best-studied drugs of the last decade — and the danger in buying them as research peptides has almost nothing to do with the molecule and almost everything to do with a person doing arithmetic with a syringe at their kitchen table."
 summary: "GLP-1 receptor agonists obtained as research chemicals or from unregulated online sellers carry risks that come from the supply chain and from self-preparation rather than from the drug itself. Poison centres have documented serious harm from preparation and measuring errors, and market analyses have found substantial quality problems in products sold without prescription."
+metaDescription: "With research-grade semaglutide the danger is not the molecule. It is a person doing arithmetic with a syringe at home."
 ratings:
   dependence:
     score: 1

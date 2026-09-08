@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content';
 import { BANDS } from '../../lib/rating-system.js';
 
 const description =
-  'Twelve compounds rated across six independent dimensions — dependence, acute toxicity, documented harm, long-term risk, evidence quality and product integrity — with what each one actually does before what it costs.';
+  'Twelve compounds rated across six independent dimensions, with what each one actually does for you stated before what it costs.';
 
 const compounds = await getCollection('compounds');
 const byBand = BANDS.map((b) => ({

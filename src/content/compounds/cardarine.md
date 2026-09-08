@@ -7,6 +7,7 @@ band: evidence-says-dont
 schemaType: Substance
 verdict: "GlaxoSmithKline developed cardarine as a metabolic drug and stopped when long-term animal studies produced cancers across multiple organs — and it is still sold to athletes today, on the strength of the endurance results from the same programme."
 summary: "Cardarine (GW-501516) is a PPARδ agonist that improves endurance and blood lipids. Its developer halted the programme after long-duration rodent carcinogenicity studies produced tumours in multiple organ systems, and the World Anti-Doping Agency took the unusual step of publicly warning athletes about it."
+metaDescription: "GSK abandoned cardarine after long-term animal studies produced tumours across multiple organs. It is still sold to athletes."
 ratings:
   dependence:
     score: 1
