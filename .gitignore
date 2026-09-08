@@ -5,3 +5,4 @@ dist/
 .link-cache.json
 .DS_Store
 .wrangler/
+.playwright-mcp/

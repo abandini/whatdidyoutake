@@ -26,6 +26,7 @@ const fullTitle = path === '/' ? `${SITE.name} — honest risk reference` : `${t
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {!noindex && <link rel="canonical" href={canonical} />}
     {/* SPEC 3 §3 — neither site may characterise the other's readers. */}
     <meta name="referrer" content="strict-origin-when-cross-origin" />
