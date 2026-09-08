@@ -35,8 +35,10 @@ break at 3am when someone needs `/emergency` to load.
 
 ### The three redirect rules are blocked on a token permission
 
-Creating them needs **Zone → Transform Rules → Edit** (the
-`http_request_dynamic_redirect` ruleset phase). Every Cloudflare token on this
+Creating them needs **Zone → Dynamic URL Redirects → Edit** (API permission
+group `Dynamic URL Redirects Write`, zone-scoped — this is the group that gates
+the `http_request_dynamic_redirect` ruleset phase). Not Transform Rules, and not
+Page Rules. Every Cloudflare token on this
 machine — `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_DOMAINS_TOKEN`,
 `CLOUDFLARE_EDIT_TOKEN`, `CLOUDFLARE_DNS_TOKEN` and the two duplicates found in
 project `.env` files — returns **HTTP 403** on that endpoint. Page Rules and
@@ -47,13 +49,18 @@ What the existing tokens *can* do: DNS records and zone settings
 `CLOUDFLARE_EDIT_TOKEN` is scoped to the `northcoast.ai` zone only.
 
 **To unblock:** at `dash.cloudflare.com/profile/api-tokens`, edit the token
-behind `CLOUDFLARE_API_TOKEN` and add:
+named **`cf-dns-reps`** (id `7d61f8abe2bd9944634a69e2280154cd`, the value behind
+`CLOUDFLARE_API_TOKEN`) and add one permission:
 
 ```
-Permission:     Zone · Transform Rules · Edit
+Permission:     Zone · Dynamic URL Redirects · Edit
 Zone Resources: Include · All zones from account
                 (or: whatdidyoutake.org, phenibutwithdrawal.org, phenibut.help)
 ```
+
+That token currently holds DNS Write, Zone Settings Write, Zone WAF Write and
+Analytics Read on all zones, which is why DNS and Pages worked and redirects did
+not.
 
 Then run `node scripts/create-redirects.mjs`, which creates all three rules
 exactly as §2 specifies and is idempotent.
