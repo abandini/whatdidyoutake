@@ -26,6 +26,7 @@ break at 3am when someone needs `/emergency` to load.
 | Google Search Console | ✅ `sc-domain:whatdidyoutake.org` verified by DNS TXT, sitemap registered |
 | IndexNow (Bing/Yandex) | ✅ all 24 URLs accepted (HTTP 202) |
 | Analytics | ✅ none, by decision — see §4 |
+| `/emergency` edge cache rule | ✅ in place; returns HIT, so `stale-if-error` can fire |
 | GitHub | ✅ https://github.com/abandini/whatdidyoutake (public) |
 | `www` → apex 301 | ✅ live, path preserved |
 | `phenibutwithdrawal.org` → `/stopping/phenibut` | ✅ live, 301 |
@@ -158,7 +159,9 @@ strength of an origin `Cache-Control` — by default it caches only static
 extensions. Without a cache rule, `/emergency` returns
 `cf-cache-status: DYNAMIC`, no copy is ever stored, and `stale-if-error` can
 never fire. This was live and undetected until 11 September 2026, alongside two
-real 504s on that page.
+real 504s on that page. **Fixed the same day** — the cache rule is in place and
+`/emergency` now returns `MISS` then `HIT`, so a stored copy exists for
+`stale-if-error` to serve.
 
 ```bash
 node scripts/create-cache-rules.mjs --dry-run
