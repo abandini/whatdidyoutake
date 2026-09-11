@@ -153,6 +153,23 @@ on.
 keeps serving the last good copy for a week rather than an error page. For that
 page specifically, slightly old is vastly better than nothing.
 
+**That header does nothing on its own.** Cloudflare does not cache HTML on the
+strength of an origin `Cache-Control` — by default it caches only static
+extensions. Without a cache rule, `/emergency` returns
+`cf-cache-status: DYNAMIC`, no copy is ever stored, and `stale-if-error` can
+never fire. This was live and undetected until 11 September 2026, alongside two
+real 504s on that page.
+
+```bash
+node scripts/create-cache-rules.mjs --dry-run
+node scripts/create-cache-rules.mjs          # needs Zone · Cache Settings · Edit
+```
+
+Verify with `curl -sSI https://whatdidyoutake.org/emergency | grep -i cf-cache-status`
+— expect `HIT` or `MISS`, never `DYNAMIC`. `npm run verify:live` now fails on
+`DYNAMIC`, because a resilience header that does nothing is worse than an absent
+one: it reads as a guarantee.
+
 ---
 
 ## 4. Analytics — deliberately none

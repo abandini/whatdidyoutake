@@ -96,6 +96,16 @@ if (!H('cache-control').includes('stale-if-error')) {
   fail(`/emergency: cache-control lacks stale-if-error (got ${JSON.stringify(H('cache-control'))})`);
 }
 
+// ...and the header only means something if the page is actually stored at the
+// edge. Cloudflare does not cache HTML on the strength of an origin header, so
+// this was DYNAMIC — the directive above was decorative, which is worse than
+// absent because it reads as a guarantee. Needs a cache rule; see
+// scripts/create-cache-rules.mjs.
+const cacheStatus = H('cf-cache-status');
+if (cacheStatus && /^(DYNAMIC|BYPASS|NONE)/i.test(cacheStatus)) {
+  fail(`/emergency: cf-cache-status is ${cacheStatus}, so nothing is stored at the edge and stale-if-error cannot fire. Run scripts/create-cache-rules.mjs.`);
+}
+
 // --- redirect domains (production only) ---
 if (IS_PROD) {
   const REDIRECTS = [
