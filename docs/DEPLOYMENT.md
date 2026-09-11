@@ -225,3 +225,25 @@ Cloudflare account and one person's continued attention.
 - `npm run verify` runs every gate plus live citation and outbound-link checks. Run it before any deploy that touched content.
 - `gate-frontmatter.mjs` **warns** when a page's `lastReviewed` passes about four months and **fails the build** at twelve. An unreviewed medical page with a three-year-old date is worse than no page, so this is enforced rather than remembered.
 - The honest ongoing cost is roughly quarterly review of twelve compound pages plus three stopping pages, and a standing relationship with one clinician.
+
+---
+
+## 9. Post-deploy verification (`npm run verify:live`)
+
+A clean build says nothing about what the edge actually serves, and the two
+differ. `scripts/gate-live.mjs` checks the deployed site rather than `dist/`:
+
+- no third-party resource injected at the edge that is not in the build
+- no analytics beacon, specifically — `/about` promises there is none
+- security headers and the `/emergency` `stale-if-error` rule, as served
+- every canonical URL returns 200 with no redirect hop
+- all four redirect domains 301 to the exact SPEC 3 §2 destinations
+- `robots.txt`, `sitemap.xml`, `llms.txt`, `favicon.svg` reachable
+
+**It requests with a browser User-Agent on purpose.** Cloudflare injects its
+Web Analytics beacon only for browser-shaped requests, so a bare `fetch()` is
+served different HTML from a reader and would have passed the exact problem this
+gate exists to find.
+
+Run it after every production deploy. It is in `npm run verify`.
+

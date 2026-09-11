@@ -13,7 +13,8 @@
     "gates:all": "npm run gates && npm run gates:dist",
     "verify:citations": "node scripts/verify-citations.mjs",
     "verify:outbound": "node scripts/gate-links.mjs --outbound",
-    "verify": "npm run gates:all && npm run verify:citations && npm run verify:outbound"
+    "verify": "npm run gates:all && npm run verify:citations && npm run verify:outbound && npm run verify:live",
+    "verify:live": "node scripts/gate-live.mjs"
   },
   "devDependencies": {
     "astro": "^7.3.1",
