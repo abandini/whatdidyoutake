@@ -11,9 +11,11 @@ const fmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', ye
 ---
 {!reviewer && (
   <p class="unreviewed">
-    <strong>This page has not yet been reviewed by a clinician.</strong> It was written from the
-    published literature and every claim is cited, but no named medical professional has checked it.
-    We say so here rather than let a missing byline read as an implicit one.
+    <strong>No clinician has reviewed this page.</strong> It was written from the published
+    literature; every claim is cited, and every citation is checked against PubMed or Crossref on
+    each build. Any first-aid instruction follows published guidance from the organisations named
+    beside it. That is the standard this site holds itself to, and it is not the same thing as a
+    doctor having read this page — you should know which one you are getting.
   </p>
 )}
 <p class="review-note">

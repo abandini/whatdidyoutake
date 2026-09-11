@@ -77,15 +77,38 @@ const unreviewed = compounds.filter((c) => !c.data.reviewedBy).length;
     We have no way to know, and pretending otherwise would be the most dangerous thing on the site.
   </p>
 
-  <h3>4. Named clinical review, or a visible notice that there isn’t any</h3>
+  <h3>4. No clinical review, stated on every page</h3>
   {reviewers.length === 0 ? (
     <p class="unreviewed">
-      <strong>No page on this site has yet been reviewed by a named clinician.</strong> All {compounds.length}
-      compound pages carry that notice on the page itself. Every claim is cited to published
-      literature and every citation is verified against PubMed or Crossref on each build, but that is
-      not the same as a medical professional having checked it, and we are not going to let a missing
-      byline imply one. Securing named clinical review is the outstanding requirement before this site
-      should be promoted anywhere.
+      <strong>No page on this site has been reviewed by a clinician, and none is scheduled to be.</strong>
+      All {compounds.length} compound pages say so on the page itself, so a missing byline never reads
+      as an implicit one.
+    </p>
+    <p>
+      What you get instead, and it is a real standard rather than a consolation: every factual claim
+      is cited to the published literature; the confidence level travels with the claim, so a case
+      report is labelled a case report and absent evidence is stated as absent; and all 67 citations
+      are resolved against PubMed and Crossref on every build, with the returned title compared
+      against the citation as printed. A citation that does not resolve, or that turns out to
+      describe a different paper, fails the build.
+    </p>
+    <p>
+      Where a page gives first-aid instruction — and only <a href="/emergency">/emergency</a> does —
+      it follows published guidance from named bodies, linked at the point of each step: the
+      <a href="https://www.redcross.org/take-a-class/first-aid/performing-first-aid/first-aid-steps" rel="noopener nofollow">American Red Cross</a>,
+      <a href="https://medlineplus.gov/ency/article/000016.htm" rel="noopener nofollow">MedlinePlus</a>
+      at the US National Library of Medicine,
+      <a href="https://nida.nih.gov/publications/drugfacts/naloxone" rel="noopener nofollow">NIDA</a> on
+      naloxone, and <a href="https://www.epilepsy.org.uk/info/firstaid" rel="noopener nofollow">Epilepsy Action</a>
+      on seizures. That page also says plainly that a 911 dispatcher's instructions override anything
+      written on it.
+    </p>
+    <p>
+      <strong>What that does not cover</strong> is worth naming, because you can then weigh it
+      yourself. The six risk scores and the verdict band on each compound page are editorial
+      judgements made from the evidence, not findings a regulator or a journal has published. So is
+      the account of what a compound feels like from the inside. Cited facts are checkable; those
+      judgements are ours.
     </p>
   ) : (
     <>

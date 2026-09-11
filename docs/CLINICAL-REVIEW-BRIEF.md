@@ -1,5 +1,21 @@
 # Clinical review — what we're asking for
 
+> **Status: not being pursued.** On 11 September 2026 the operator decided
+> against seeking clinical review, on the basis that cited and machine-verified
+> claims, plus first-aid guidance sourced to the American Red Cross, MedlinePlus,
+> NIDA and Epilepsy Action, are a sufficient standard for this site.
+>
+> This is a deliberate, documented deviation from `SPEC-2` §11.4. Do not treat
+> it as an unfinished task or quietly revert it. Every page states that no
+> clinician has reviewed it, and `/about` §4 sets out both what the standard is
+> and what it does not cover — the six risk scores and the verdict bands are
+> editorial judgements, and they are labelled as such.
+>
+> The brief below is kept intact in case that decision is revisited.
+
+---
+
+
 A one-page brief to hand to a prospective reviewer. It exists to make the ask
 small, bounded and specific, because "would you review my website" is an
 unanswerable question and "would you read four pages and tell me what's wrong"

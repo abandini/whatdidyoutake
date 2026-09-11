@@ -90,15 +90,21 @@ See `docs/DEPLOYMENT.md` §0 for the full state and what is still outstanding.
 
 ## Outstanding
 
-1. **Three redirect rules are blocked on a Cloudflare token permission**
-   (`Zone · Transform Rules · Edit`). `www` → apex, and the two deep-linking
-   domains. Add the permission, then run `node scripts/create-redirects.mjs`.
-   Details in `docs/DEPLOYMENT.md` §0.
-2. **No page has been clinically reviewed.** All twelve compound pages carry a
-   visible notice saying so, which is the honest state — but SPEC 2 §11.4 wants a
-   named reviewer with published credentials. Add a file to
-   `src/content/reviewers/` and set `reviewedBy:` on each page; the notice
-   disappears automatically and `reviewedBy` populates in the JSON-LD.
+1. **Nothing blocking.** All redirects, headers, the `/emergency` edge cache
+   rule and the GSC/IndexNow submissions are live and verified; `npm run verify`
+   is green end to end. Re-run it after any Cloudflare change in either
+   project.
+2. **Clinical review: decided against, deliberately.** A documented deviation
+   from SPEC 2 §11.4, which asks for a named reviewer. The operator's decision
+   (11 September 2026) is that cited, machine-verified claims plus first-aid
+   guidance sourced to the Red Cross, MedlinePlus, NIDA and Epilepsy Action are
+   the standard this site runs on. Every page says no clinician has reviewed it,
+   and `/about` §4 states what the standard is and what it does not cover.
+
+   The machinery is still in place if that changes: add a file to
+   `src/content/reviewers/` and set `reviewedBy:` on a page — the notice
+   disappears and `reviewedBy` populates in the JSON-LD automatically.
+   `docs/CLINICAL-REVIEW-BRIEF.md` is written and ready to send.
 
 ---
 
