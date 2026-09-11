@@ -129,7 +129,7 @@ const jsonLd = {
     Everything above is national. This one is local, and it is here because the person who runs this
     site is in Cleveland and can vouch for it — not because Northeast Ohio matters more than anywhere
     else. If you know an equivalent elsewhere that meets the same bar — a registered nonprofit, free
-    at the point of use, no insurance needed, nothing sold to you —
+    at the point of use, no insurance needed, and no commercial interest in the reader —
     <a href={`mailto:${SITE.correctionsAddress}`}>tell us</a> and we will look at it.
   </p>
   {REGIONAL_RESOURCES.map((r) => (
@@ -146,6 +146,41 @@ const jsonLd = {
       </p>
     </div>
   ))}
+
+  <figure class="photo">
+    <picture>
+      <source srcset="/img/love-lock-fence-sign.webp" type="image/webp" />
+      <img
+        src="/img/love-lock-fence-sign.jpg"
+        width="452"
+        height="600"
+        loading="lazy"
+        decoding="async"
+        alt="A laminated LOVE LOCKS sign on a purple-painted post, beside a chain-link gate hung with dozens of padlocks."
+      />
+    </picture>
+    <figcaption>
+      The Love Lock fence outside Project White Butterfly in Parma. Every padlock has a name on it,
+      added by somebody who lost that person.
+    </figcaption>
+  </figure>
+
+  <p>
+    The sign on it reads, in part:
+  </p>
+
+  <blockquote>
+    <p>
+      “We have placed this LOVE LOCK FENCE here to help generate a sense of community for families
+      &amp; friends who have [lost] loved ones to overdose. Anyone who has lost someone and wants to
+      raise awareness and help reduce stigma may bring a lock.”
+    </p>
+  </blockquote>
+
+  <p>
+    We include it for one reason: if you are reading this page, you are probably feeling like the
+    only person this has happened to. That fence is a few hundred padlocks saying otherwise.
+  </p>
 
   <h2>One last thing</h2>
   <p>

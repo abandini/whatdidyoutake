@@ -334,3 +334,13 @@ details[open] summary { margin-bottom: 0.75rem; }
 .script p { margin-bottom: 0.8em; max-width: none; }
 .script p:last-child { margin-bottom: 0; }
 .script .say { font-weight: 650; }
+
+/* A documentary photograph, sized to sit beside prose rather than dominate it.
+   The only image on the site; /emergency stays text-only by hard constraint. */
+.photo { margin: 1.75rem 0; max-width: 26rem; }
+.photo img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 2px; }
+.photo figcaption { font-size: var(--step--1); color: var(--ink-soft); margin-top: 0.6rem; }
+@media (prefers-color-scheme: dark) {
+  /* Knock back the brightness of a sunlit photo against a dark ground. */
+  .photo img { filter: brightness(0.88) contrast(1.02); }
+}

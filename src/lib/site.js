@@ -49,7 +49,7 @@ export const HELPLINES = {
  * Regional resources. Deliberately labelled as regional rather than presented
  * as national coverage, because the site has no way to vouch for equivalents
  * elsewhere. The bar for inclusion: verified nonprofit status, free at point of
- * use, no insurance required, and nothing sold to the reader.
+ * use, no insurance required, and no commercial interest in the reader.
  */
 export const REGIONAL_RESOURCES = [
   {
