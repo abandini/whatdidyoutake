@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE, HELPLINES } from '../lib/site.js';
+import { SITE, HELPLINES, REGIONAL_RESOURCES } from '../lib/site.js';
 
 // SPEC 2 §7. Design constraints: loads on a bad connection in a hospital car
 // park, no images, no JS required, largest text on the site. SPEC 3 §6: never
@@ -215,6 +215,11 @@ const jsonLd = {
         This matters for <a href="/compounds/tianeptine">tianeptine</a> and
         <a href="/compounds/kratom">kratom</a>, which are opioids that most people do not think of
         as opioids.
+        {REGIONAL_RESOURCES.map((r) => (
+          <><br /><br /><strong>{r.region}:</strong> <a href={r.url} rel="noopener nofollow">{r.name}</a>
+          {' '}(<a class="tel" href={`tel:${r.tel}`}>{r.phone}</a>) gives out naloxone and fentanyl
+          test strips free, with no insurance required.</>
+        ))}
       </li>
       <li>
         <strong>Take a first aid and CPR class.</strong> A few hours, widely available, and it is the

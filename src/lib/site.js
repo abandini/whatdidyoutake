@@ -45,6 +45,28 @@ export const HELPLINES = {
   samhsa: { label: 'SAMHSA National Helpline', number: '1-800-662-4357', tel: '+18006624357' },
 };
 
+/**
+ * Regional resources. Deliberately labelled as regional rather than presented
+ * as national coverage, because the site has no way to vouch for equivalents
+ * elsewhere. The bar for inclusion: verified nonprofit status, free at point of
+ * use, no insurance required, and nothing sold to the reader.
+ */
+export const REGIONAL_RESOURCES = [
+  {
+    region: 'Northeast Ohio (Cuyahoga County)',
+    name: 'Project White Butterfly',
+    url: 'https://projectwhitebutterfly.org/',
+    tel: '+12167278725',
+    phone: '216-727-8725',
+    /** Verified against ProPublica's IRS extract, EIN 84-4507335, NTEE F21. */
+    status: '501(c)(3), EIN 84-4507335',
+    what:
+      'Peer-led, staffed by people with lived experience of addiction. Distributes naloxone ' +
+      'and fentanyl test strips free, runs group meetings, and connects people to treatment. ' +
+      'No cost and no insurance required.',
+  },
+];
+
 export const NAV = [
   { href: '/compounds', label: 'Compounds' },
   { href: '/am-i-dependent', label: 'Am I dependent?' },

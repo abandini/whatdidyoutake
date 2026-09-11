@@ -1,0 +1,11 @@
+{
+  "$comment": "Hosts that serve humans fine but reject automated requests (bot protection), so gate-links --outbound cannot verify them. Each entry records who checked it in a real browser and when. Do NOT add an entry to paper over a genuinely dead link — the point is to distinguish 'blocked' from 'broken'.",
+  "entries": [
+    {
+      "url": "https://projectwhitebutterfly.org/",
+      "reason": "Returns HTTP 403 to curl, WebFetch and any non-browser user agent. Loads normally in a real browser; title 'Project White Butterfly | Addiction Recovery and Peer Support Services'. Nonprofit status independently confirmed via ProPublica IRS extract (EIN 84-4507335, NTEE F21) and phone confirmed from the site's own tel: link.",
+      "verifiedOn": "2026-09-11",
+      "verifiedBy": "loaded in headless Chrome via Playwright"
+    }
+  ]
+}

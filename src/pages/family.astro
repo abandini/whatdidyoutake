@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE, HELPLINES } from '../lib/site.js';
+import { SITE, HELPLINES, REGIONAL_RESOURCES } from '../lib/site.js';
 
 // SPEC 2 §10 — for the reader who found something and does not know what it is.
 // Practical, not frightening, and specific about the one action that makes
@@ -123,6 +123,29 @@ const jsonLd = {
     <li><strong>Medicaid in expansion states</strong> covers adults on income alone — no asset test, and no waiting for an open enrolment window, because a change in income or loss of coverage opens enrolment at any time. A great many people who assume they cannot qualify, do.</li>
     <li><strong>Emergency departments</strong> can begin treatment and refer onward, and cannot turn someone away for inability to pay.</li>
   </ul>
+
+  <h2>If you’re near Cleveland</h2>
+  <p>
+    Everything above is national. This one is local, and it is here because the person who runs this
+    site is in Cleveland and can vouch for it — not because Northeast Ohio matters more than anywhere
+    else. If you know an equivalent elsewhere that meets the same bar — a registered nonprofit, free
+    at the point of use, no insurance needed, nothing sold to you —
+    <a href={`mailto:${SITE.correctionsAddress}`}>tell us</a> and we will look at it.
+  </p>
+  {REGIONAL_RESOURCES.map((r) => (
+    <div class="callout">
+      <p>
+        <strong><a href={r.url} rel="noopener nofollow">{r.name}</a></strong> — {r.region}<br />
+        <a class="tel" href={`tel:${r.tel}`}>{r.phone}</a> · {r.status}
+      </p>
+      <p>{r.what}</p>
+      <p>
+        They are people who have been where the person you are worried about is now, which is a
+        different thing from a clinic, and for some people it is the thing that works. They are not a
+        substitute for <a href="/emergency">emergency care</a> if this is an emergency.
+      </p>
+    </div>
+  ))}
 
   <h2>One last thing</h2>
   <p>

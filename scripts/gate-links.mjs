@@ -91,10 +91,23 @@ console.log(`✓ link gate: ${pages.length} pages, 0 broken internal links, ${ex
 if (!OUTBOUND) process.exit(0);
 
 const cache = existsSync(CACHE_PATH) ? JSON.parse(readFileSync(CACHE_PATH, 'utf8')) : {};
+
+// Some hosts serve humans fine and reject every automated request. Those are
+// "blocked", not "broken", and the difference has to be recorded by a person
+// rather than inferred — so each exemption carries who checked it and when.
+const ALLOW_PATH = join(ROOT, 'scripts/link-allowlist.json');
+const allowlist = existsSync(ALLOW_PATH) ? JSON.parse(readFileSync(ALLOW_PATH, 'utf8')).entries ?? [] : [];
+for (const [i, e] of allowlist.entries()) {
+  for (const field of ['url', 'reason', 'verifiedOn', 'verifiedBy']) {
+    if (!e[field]) { console.error(`link-allowlist entry #${i} is missing "${field}"`); process.exit(2); }
+  }
+}
+const allowed = new Set(allowlist.map((e) => e.url));
 const dead = [];
 let n = 0;
 for (const [url, from] of external) {
   n++;
+  if (allowed.has(url)) { continue; }
   let status = cache[url];
   if (status === undefined) {
     try {
@@ -121,4 +134,4 @@ if (dead.length) {
   for (const d of dead) console.error(`  ✗ ${d}\n`);
   process.exit(1);
 }
-console.log(`✓ outbound: all ${external.size} external URLs resolve`);
+console.log(`✓ outbound: ${external.size - allowed.size} external URLs resolve, ${allowed.size} browser-verified exemption(s)`);
